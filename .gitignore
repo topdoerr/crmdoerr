@@ -1,0 +1,60 @@
+########################################
+# OS / editor junk
+########################################
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+__MACOSX/
+**/__MACOSX/
+
+########################################
+# Runtime user data (NEVER commit)
+########################################
+/uploads/
+modules/**/uploads/
+media/
+temp/
+tmp/
+
+########################################
+# Logs / cache (runtime)
+########################################
+*.log
+application/logs/
+application/cache/
+
+########################################
+# Secrets / environment
+########################################
+.env
+.env.*
+*.env
+!.env.example
+application/config/app-config.php
+/config/app-config.php
+
+
+########################################
+# PHP dependencies (rebuild with composer)
+########################################
+/vendor/
+application/vendor/
+modules/**/vendor/
+
+########################################
+# Node dependencies (rebuild with npm/yarn)
+########################################
+node_modules/
+**/node_modules/
+
+########################################
+# Build artifacts (only if you rebuild in CI)
+# If you DON'T rebuild assets, comment these out.
+########################################
+# assets/builds/
+# modules/**/assets/builds/
+# dist/
+# build/
+
