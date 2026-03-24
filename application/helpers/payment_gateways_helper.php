@@ -45,15 +45,18 @@ function payment_gateway_head($title = 'Payment for Invoice')
 
     add_favicon_link_asset(PAYMENT_GATEWAYS_ASSETS_GROUP);
 
-    $CI->app_css->add('inter-font', 'assets/plugins/inter/inter.css', PAYMENT_GATEWAYS_ASSETS_GROUP);
-
     $CI->app_css->add(
         'reset-css',
         base_url($CI->app_css->core_file('assets/css', 'reset.css')) . '?v=' . $CI->app_css->core_version(),
         PAYMENT_GATEWAYS_ASSETS_GROUP
     );
 
-    $CI->app_css->add('bootstrap-css', 'assets/plugins/bootstrap/css/bootstrap.min.css', PAYMENT_GATEWAYS_ASSETS_GROUP);
+    $CI->app_css->add('topdoerr-fonts', [
+        'path'    => TOPDOERR_GOOGLE_FONTS_URL,
+        'version' => false,
+    ], PAYMENT_GATEWAYS_ASSETS_GROUP, ['reset-css']);
+
+    $CI->app_css->add('bootstrap-css', 'assets/plugins/bootstrap/css/bootstrap.min.css', PAYMENT_GATEWAYS_ASSETS_GROUP, ['reset-css']);
 
     $CI->app_css->add('tailwind-css', base_url($CI->app_css->core_file('assets/builds', 'tailwind.css')) . '?v=' . $CI->app_css->core_version(), PAYMENT_GATEWAYS_ASSETS_GROUP, ['bootstrap-css']);
 
@@ -61,6 +64,13 @@ function payment_gateway_head($title = 'Payment for Invoice')
         'theme-css',
         base_url($CI->app_scripts->core_file(theme_assets_path() . '/css', 'style.css')) . '?v=' . $CI->app_css->core_version(),
         PAYMENT_GATEWAYS_ASSETS_GROUP
+    );
+
+    $CI->app_css->add(
+        'topdoerr-brand',
+        base_url('assets/css/topdoerr-brand.css') . '?v=' . $CI->app_css->core_version(),
+        PAYMENT_GATEWAYS_ASSETS_GROUP,
+        ['theme-css']
     );
 
     $html = '<!DOCTYPE html>' . PHP_EOL;

@@ -2,8 +2,19 @@
 <aside id="menu" class="sidebar sidebar">
     <ul class="nav metis-menu" id="side-menu">
         <li class="tw-mt-[63px] sm:tw-mt-0 -tw-mx-2 tw-overflow-hidden sm:tw-bg-neutral-900/50">
-            <div id="logo" class="tw-py-2 tw-px-2 tw-h-[63px] tw-flex tw-items-center">
-                <?php echo get_company_logo(get_admin_uri() . '/', '!tw-mt-0')?>
+            <div id="logo" class="sidebar-logo tw-py-5 tw-px-4 tw-min-h-[63px] tw-flex tw-items-center">
+                <a href="<?php echo admin_url(); ?>" class="topdoerr-logo-mark tw-flex tw-items-center tw-gap-2.5 !tw-mt-0 tw-no-underline hover:tw-opacity-95" aria-label="TopDoerr CRM">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="tw-flex-shrink-0" aria-hidden="true">
+                        <ellipse cx="16" cy="16" rx="14.5" ry="13" stroke="#FEFAE0" stroke-width="1.1" fill="none" opacity=".22"/>
+                        <ellipse cx="16" cy="16" rx="11" ry="9.8" stroke="#FEFAE0" stroke-width="1.2" fill="none" opacity=".34"/>
+                        <ellipse cx="16" cy="16" rx="7.8" ry="7.0" stroke="#FEFAE0" stroke-width="1.4" fill="none" opacity=".48"/>
+                        <ellipse cx="16" cy="16" rx="4.8" ry="4.3" stroke="#FEFAE0" stroke-width="1.6" fill="none" opacity=".62"/>
+                        <ellipse cx="16" cy="16" rx="2.4" ry="2.15" stroke="#D4822E" stroke-width="2.0" fill="none"/>
+                        <circle cx="16" cy="16" r="1.15" fill="#D4822E"/>
+                        <circle cx="16" cy="16" r="0.42" fill="#FEFAE0" opacity=".9"/>
+                    </svg>
+                    <span class="td-sidebar-wordmark">TopDoerr</span>
+                </a>
             </div>
         </li>
         <?php

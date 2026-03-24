@@ -9,6 +9,11 @@
     <title>
         <?php echo e(get_option('companyname')); ?> - <?php echo _l('admin_auth_login_heading'); ?>
     </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <?php if (get_option('favicon') == '') { ?>
+    <link rel="icon" href="<?php echo base_url('assets/images/favicon-topdoerr.svg'); ?>" type="image/svg+xml">
+    <?php } ?>
     <?php echo app_compile_css('admin-auth'); ?>
     <style>
     body,
@@ -21,8 +26,8 @@
     }
 
     body {
-        font-family: "Inter", sans-serif;
-        color: #475569;
+        font-family: "Instrument Sans", system-ui, -apple-system, sans-serif;
+        color: #1A1F0E;
         margin: 0;
         padding: 0;
     }

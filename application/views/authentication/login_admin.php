@@ -1,14 +1,24 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $this->load->view('authentication/includes/head.php'); ?>
 
-<body class="tw-bg-neutral-100 login_admin">
+<body class="tw-bg-neutral-100 login_admin authentication">
 
     <div class="tw-max-w-md tw-mx-auto tw-pt-24 authentication-form-wrapper tw-relative tw-z-20">
         <div class="company-logo text-center">
-            <?php get_dark_company_logo(); ?>
+            <a href="<?php echo admin_url('authentication'); ?>" class="tw-inline-block" aria-label="TopDoerr CRM">
+                <svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <ellipse cx="20" cy="20" rx="15" ry="13.5" stroke="#283618" stroke-width="1.1" fill="none" opacity=".22"/>
+                    <ellipse cx="20" cy="20" rx="11.5" ry="10.2" stroke="#283618" stroke-width="1.2" fill="none" opacity=".34"/>
+                    <ellipse cx="20" cy="20" rx="8.2" ry="7.3" stroke="#283618" stroke-width="1.4" fill="none" opacity=".48"/>
+                    <ellipse cx="20" cy="20" rx="5" ry="4.5" stroke="#606C38" stroke-width="1.6" fill="none" opacity=".62"/>
+                    <ellipse cx="20" cy="20" rx="2.5" ry="2.2" stroke="#BC6C25" stroke-width="2" fill="none"/>
+                    <circle cx="20" cy="20" r="1.2" fill="#BC6C25"/>
+                    <text x="46" y="26" font-family="Fraunces, serif" font-size="20" font-weight="500" fill="#283618" letter-spacing="-0.5">TopDoerr</text>
+                </svg>
+            </a>
         </div>
 
-        <h1 class="tw-text-2xl tw-text-neutral-800 text-center tw-font-semibold tw-mb-5">
+        <h1 class="tw-text-2xl tw-text-neutral-900 text-center tw-font-semibold tw-mb-5 topdoerr-login-title">
             <?php echo _l('admin_auth_login_heading'); ?>
         </h1>
 

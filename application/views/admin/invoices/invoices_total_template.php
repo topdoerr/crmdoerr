@@ -41,33 +41,33 @@
     <?php } ?>
 </div>
 <?php } ?>
-<dl class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-3 sm:tw-gap-5 tw-mb-0">
-    <div class="tw-border tw-border-solid tw-border-neutral-200 tw-rounded-md tw-bg-white">
+<dl class="tw-grid tw-grid-cols-1 md:tw-grid-cols-3 tw-gap-3 sm:tw-gap-5 tw-mb-0 td-invoice-stats-grid">
+    <div class="td-invoice-stat td-invoice-stat-outstanding tw-border tw-border-solid tw-border-neutral-200 tw-rounded-md tw-bg-white">
         <div class="tw-px-4 tw-py-5 sm:tw-px-4 sm:tw-py-2">
-            <dt class="tw-font-medium text-warning"><?php echo _l('outstanding_invoices'); ?></dt>
+            <dt class="tw-font-medium text-warning td-invoice-stat-label"><?php echo _l('outstanding_invoices'); ?></dt>
             <dd class="tw-mt-1 tw-flex tw-items-baseline tw-justify-between md:tw-block lg:tw-flex">
-                <div class="tw-flex tw-items-baseline tw-text-base tw-font-semibold tw-text-primary-600">
+                <div class="tw-flex tw-items-baseline tw-text-base tw-font-semibold tw-text-primary-600 td-invoice-stat-amount">
                     <?php echo e(app_format_money($total_result['due'], $total_result['currency'])); ?>
                 </div>
             </dd>
         </div>
     </div>
-    <div class="tw-border tw-border-solid tw-border-neutral-200 tw-rounded-md tw-bg-white">
+    <div class="td-invoice-stat td-invoice-stat-overdue tw-border tw-border-solid tw-border-neutral-200 tw-rounded-md tw-bg-white">
         <div class="tw-px-4 tw-py-5 sm:tw-px-4 sm:tw-py-2">
-            <dt class="tw-font-medium text-muted"><?php echo _l('past_due_invoices'); ?></dt>
+            <dt class="tw-font-medium text-muted td-invoice-stat-label"><?php echo _l('past_due_invoices'); ?></dt>
             <dd class="tw-mt-1 tw-flex tw-items-baseline tw-justify-between md:tw-block lg:tw-flex">
-                <div class="tw-flex tw-items-baseline tw-text-base tw-font-semibold tw-text-primary-600">
+                <div class="tw-flex tw-items-baseline tw-text-base tw-font-semibold tw-text-primary-600 td-invoice-stat-amount">
                     <?php echo e(app_format_money($total_result['overdue'], $total_result['currency'])); ?>
                 </div>
             </dd>
         </div>
     </div>
 
-    <div class="tw-border tw-border-solid tw-border-neutral-200 tw-rounded-md tw-bg-white">
+    <div class="td-invoice-stat td-invoice-stat-paid tw-border tw-border-solid tw-border-neutral-200 tw-rounded-md tw-bg-white">
         <div class="tw-px-4 tw-py-5 sm:tw-px-4 sm:tw-py-2">
-            <dt class="tw-font-medium text-success"><?php echo _l('paid_invoices'); ?></dt>
+            <dt class="tw-font-medium text-success td-invoice-stat-label"><?php echo _l('paid_invoices'); ?></dt>
             <dd class="tw-mt-1 tw-flex tw-items-baseline tw-justify-between md:tw-block lg:tw-flex">
-                <div class="tw-flex tw-items-baseline tw-text-base tw-font-semibold tw-text-primary-600">
+                <div class="tw-flex tw-items-baseline tw-text-base tw-font-semibold tw-text-primary-600 td-invoice-stat-amount">
                     <?php echo e(app_format_money($total_result['paid'], $total_result['currency'])); ?>
                 </div>
             </dd>

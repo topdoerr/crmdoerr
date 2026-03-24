@@ -253,7 +253,10 @@ function app_external_form_header($form)
 
     $CI->app_css->add('reset-css', 'assets/css/reset.min.css', $assetsGroup);
 
-    $CI->app_css->add('inter-font', 'assets/plugins/inter/inter.css', $assetsGroup);
+    $CI->app_css->add('topdoerr-fonts', [
+        'path'    => TOPDOERR_GOOGLE_FONTS_URL,
+        'version' => false,
+    ], $assetsGroup, ['reset-css']);
 
     $CI->app_css->add('bootstrap-css', 'assets/plugins/bootstrap/css/bootstrap.min.css', $assetsGroup);
 
@@ -275,8 +278,15 @@ function app_external_form_header($form)
 
     $CI->app_css->add('forms-css', base_url($CI->app_css->core_file('assets/css', 'forms.css')) . '?v=' . $CI->app_css->core_version(), $assetsGroup);
 
+    $CI->app_css->add(
+        'topdoerr-brand',
+        base_url('assets/css/topdoerr-brand.css') . '?v=' . $CI->app_css->core_version(),
+        $assetsGroup,
+        ['forms-css']
+    );
+
     if (file_exists(FCPATH . 'assets/css/custom.css')) {
-        $CI->app_css->add('custom-css', base_url('assets/css/custom.css'), $assetsGroup);
+        $CI->app_css->add('custom-css', base_url('assets/css/custom.css'), $assetsGroup, ['topdoerr-brand']);
     }
 
     echo app_compile_css($assetsGroup);

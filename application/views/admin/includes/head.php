@@ -11,6 +11,12 @@
 
     <title><?php echo isset($title) ? $title : get_option('companyname'); ?></title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <?php if (get_option('favicon') == '') { ?>
+    <link rel="icon" href="<?php echo base_url('assets/images/favicon-topdoerr.svg'); ?>" type="image/svg+xml">
+    <?php } ?>
+
     <?php echo app_compile_css(); ?>
     <?php render_admin_js_variables(); ?>
 

@@ -2,9 +2,9 @@
   "name": "perfex",
   "version": "1.0.0",
   "scripts": {
-    "up": "php -S localhost:8000 -t .",
-    "dev": "npm run development && cd application && composer i && cd .. && php -S localhost:8000 -t .",
-    "development": "mix",
+    "up": "php -d max_execution_time=120 -S 0.0.0.0:8000 -t .",
+    "dev": "npm run development && cd application && composer i && cd .. && php -d max_execution_time=120 -S 0.0.0.0:8000 -t .",
+    "development": "webpack --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "mix watch",
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",

@@ -2,6 +2,9 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+/** Google Fonts: Fraunces + Instrument Sans (TopDoerr brand) */
+define('TOPDOERR_GOOGLE_FONTS_URL', 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,200;1,9..144,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
 hooks()->add_action('admin_auth_init', 'init_admin_auth_assets');
 hooks()->add_action('app_admin_assets', '_init_admin_assets');
 
@@ -25,15 +28,20 @@ function init_admin_auth_assets()
 
     add_favicon_link_asset($groupName);
 
-    $CI->app_css->add('reset-css', 'assets/css/reset.min.css', $groupName, ['inter-font']);
-    $CI->app_css->add('inter-font', 'assets/plugins/inter/inter.css', $groupName);
-    $CI->app_css->add('bootstrap-css', 'assets/plugins/bootstrap/css/bootstrap.min.css', $groupName);
+    $CI->app_css->add('reset-css', 'assets/css/reset.min.css', $groupName);
+    $CI->app_css->add('topdoerr-fonts', [
+        'path'    => TOPDOERR_GOOGLE_FONTS_URL,
+        'version' => false,
+    ], $groupName, ['reset-css']);
+    $CI->app_css->add('bootstrap-css', 'assets/plugins/bootstrap/css/bootstrap.min.css', $groupName, ['reset-css']);
 
     if (is_rtl()) {
-        $CI->app_css->add('bootstrap-rtl-css', 'assets/plugins/bootstrap-arabic/css/bootstrap-arabic.min.css', $groupName);
+        $CI->app_css->add('bootstrap-rtl-css', 'assets/plugins/bootstrap-arabic/css/bootstrap-arabic.min.css', $groupName, ['bootstrap-css']);
     }
 
     $CI->app_css->add('tailwind-css', base_url($CI->app_css->core_file('assets/builds', 'tailwind.css')) . '?v=' . $CI->app_css->core_version(), $groupName, ['bootstrap-css']);
+
+    $CI->app_css->add('topdoerr-brand', base_url('assets/css/topdoerr-brand.css') . '?v=' . $CI->app_css->core_version(), $groupName, ['tailwind-css']);
 }
 
 function _init_admin_assets()
@@ -75,7 +83,10 @@ function _init_admin_assets()
     add_favicon_link_asset();
 
     $CI->app_css->add('reset-css', 'assets/css/reset.min.css');
-    $CI->app_css->add('inter-font', 'assets/plugins/inter/inter.css', 'admin', ['reset-css']);
+    $CI->app_css->add('topdoerr-fonts', [
+        'path'    => TOPDOERR_GOOGLE_FONTS_URL,
+        'version' => false,
+    ], 'admin', ['reset-css']);
     $CI->app_css->add('vendor-css', 'assets/builds/vendor-admin.css', 'admin', ['reset-css']);
 
     $CI->app_css->add('fontawesome-css', 'assets/plugins/font-awesome/css/fontawesome.min.css');
@@ -91,8 +102,10 @@ function _init_admin_assets()
 
     $CI->app_css->add('app-css', base_url($CI->app_css->core_file('assets/css', 'style.css')) . '?v=' . $CI->app_css->core_version(), 'admin', ['tailwind-css']);
 
+    $CI->app_css->add('topdoerr-brand', base_url('assets/css/topdoerr-brand.css') . '?v=' . $CI->app_css->core_version(), 'admin', ['app-css']);
+
     if (file_exists(FCPATH . 'assets/css/custom.css')) {
-        $CI->app_css->add('custom-css', base_url('assets/css/custom.css'), 'admin', ['app-css']);
+        $CI->app_css->add('custom-css', base_url('assets/css/custom.css'), 'admin', ['topdoerr-brand']);
     }
 
     hooks()->do_action('app_admin_assets_added');
