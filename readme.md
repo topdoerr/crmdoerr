@@ -35,6 +35,8 @@ Importante: `composer install` no va en la raiz porque el `composer.json` esta e
 
 ## 3. Configurar app local
 
+(No olvides crear la abse de datos y utilizar el database.sql en la raiz del proyecto para crear las tablas requeridas)
+
 1. Copiar `application/config/app-config-sample.php` como `application/config/app-config.php`.
 2. Completar en `app-config.php`:
    * `APP_BASE_URL` (ejemplo: `http://localhost:8000/`)
