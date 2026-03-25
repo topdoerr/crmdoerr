@@ -1,0 +1,8 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Legacy PHP files (composer.phar, jQuery examples) contain embedded
+  # strings that trigger false-positive secret detection.
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
