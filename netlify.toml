@@ -6,3 +6,7 @@
   # Legacy PHP files (composer.phar, jQuery examples) contain embedded
   # strings that trigger false-positive secret detection.
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+  NODE_VERSION = "22"
+  # Prevent mise from trying to install unavailable Python/Ruby/Go versions
+  MISE_PYTHON_DEFAULT_PACKAGES_FILE = ""
+  MISE_DISABLE_TOOLS = "python,ruby,go"
