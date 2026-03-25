@@ -213,7 +213,7 @@ export default async function InvoiceDetailPage({
                         )}
                       </TableCell>
                       <TableCell className="text-right">
-                        {item.qty}
+                        {Number(item.qty)}
                         {item.unit ? ` ${item.unit}` : ""}
                       </TableCell>
                       <TableCell className="text-right">

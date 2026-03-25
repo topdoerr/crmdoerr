@@ -367,10 +367,10 @@ export default async function ClientDetailPage({
                           {contract.subject}
                         </TableCell>
                         <TableCell>
-                          {formatDate(contract.startDate)}
+                          {formatDate(contract.datestart)}
                         </TableCell>
                         <TableCell>
-                          {formatDate(contract.endDate)}
+                          {formatDate(contract.dateend)}
                         </TableCell>
                         <TableCell>
                           {formatCurrency(

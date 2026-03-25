@@ -5,25 +5,25 @@ import { revalidatePath } from "next/cache";
 
 export async function createTicket(formData: FormData) {
   const data = {
-    subject: (formData.get("subject") as string) || null,
-    message: (formData.get("message") as string) || null,
-    email: (formData.get("email") as string) || null,
-    name: (formData.get("name") as string) || null,
+    subject: (formData.get("subject") as string) || "",
+    message: (formData.get("message") as string) || "",
+    email: (formData.get("email") as string) || undefined,
+    name: (formData.get("name") as string) || undefined,
     department: formData.get("department")
       ? Number(formData.get("department"))
-      : null,
+      : undefined,
     priority: formData.get("priority")
       ? Number(formData.get("priority"))
-      : null,
+      : 0,
     status: 1, // default: Open
     date: new Date(),
     assigned: formData.get("assigned")
       ? Number(formData.get("assigned"))
-      : 0,
-    userid: formData.get("userid") ? Number(formData.get("userid")) : 0,
+      : undefined,
+    userid: formData.get("userid") ? Number(formData.get("userid")) : undefined,
     contactid: formData.get("contactid")
       ? Number(formData.get("contactid"))
-      : 0,
+      : undefined,
   };
 
   const ticket = await prisma.ticket.create({ data });

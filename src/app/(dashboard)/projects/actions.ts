@@ -9,25 +9,25 @@ export async function createProject(formData: FormData) {
     description: (formData.get("description") as string) || null,
     status: Number(formData.get("status")) || 1,
     clientId: Number(formData.get("clientId")) || 0,
-    billingType: Number(formData.get("billingType")) || null,
+    billingType: Number(formData.get("billingType")) || 1,
     startDate: formData.get("startDate")
       ? new Date(formData.get("startDate") as string)
-      : null,
+      : new Date(),
     deadline: formData.get("deadline")
       ? new Date(formData.get("deadline") as string)
-      : null,
+      : undefined,
     projectCost: formData.get("projectCost")
       ? parseFloat(formData.get("projectCost") as string)
-      : null,
+      : undefined,
     projectRatePerHour: formData.get("projectRatePerHour")
       ? parseFloat(formData.get("projectRatePerHour") as string)
-      : null,
+      : undefined,
     estimatedHours: formData.get("estimatedHours")
       ? parseFloat(formData.get("estimatedHours") as string)
-      : null,
+      : undefined,
     progress: 0,
     projectCreated: new Date(),
-    addedfrom: Number(formData.get("addedfrom")) || 0,
+    addedfrom: formData.get("addedfrom") ? Number(formData.get("addedfrom")) : undefined,
   };
 
   const project = await prisma.project.create({ data });
@@ -42,22 +42,22 @@ export async function updateProject(id: number, formData: FormData) {
     description: (formData.get("description") as string) || null,
     status: Number(formData.get("status")) || 1,
     clientId: Number(formData.get("clientId")) || 0,
-    billingType: Number(formData.get("billingType")) || null,
+    billingType: Number(formData.get("billingType")) || undefined,
     startDate: formData.get("startDate")
       ? new Date(formData.get("startDate") as string)
-      : null,
+      : undefined,
     deadline: formData.get("deadline")
       ? new Date(formData.get("deadline") as string)
-      : null,
+      : undefined,
     projectCost: formData.get("projectCost")
       ? parseFloat(formData.get("projectCost") as string)
-      : null,
+      : undefined,
     projectRatePerHour: formData.get("projectRatePerHour")
       ? parseFloat(formData.get("projectRatePerHour") as string)
-      : null,
+      : undefined,
     estimatedHours: formData.get("estimatedHours")
       ? parseFloat(formData.get("estimatedHours") as string)
-      : null,
+      : undefined,
     progress: formData.get("progress")
       ? Number(formData.get("progress"))
       : undefined,

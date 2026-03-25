@@ -69,7 +69,7 @@ export default async function ProjectDetailPage({
       members: {
         include: {
           staff: {
-            select: { staffid: true, firstname: true, lastname: true, email: true },
+            select: { staffid: true, firstName: true, lastName: true, email: true },
           },
         },
       },
@@ -78,7 +78,7 @@ export default async function ProjectDetailPage({
           assignees: {
             include: {
               staff: {
-                select: { staffid: true, firstname: true, lastname: true },
+                select: { staffid: true, firstName: true, lastName: true },
               },
             },
           },
@@ -245,7 +245,7 @@ export default async function ProjectDetailPage({
                 ) : (
                   <div className="space-y-3">
                     {project.members.map((member) => {
-                      const name = `${member.staff.firstname ?? ""} ${member.staff.lastname ?? ""}`.trim();
+                      const name = `${member.staff.firstName ?? ""} ${member.staff.lastName ?? ""}`.trim();
                       return (
                         <div
                           key={member.id}
@@ -336,7 +336,7 @@ export default async function ProjectDetailPage({
                           <TableCell>
                             <div className="flex -space-x-2">
                               {task.assignees.map((a) => {
-                                const aName = `${a.staff.firstname ?? ""} ${a.staff.lastname ?? ""}`.trim();
+                                const aName = `${a.staff.firstName ?? ""} ${a.staff.lastName ?? ""}`.trim();
                                 return (
                                   <Avatar
                                     key={a.id}

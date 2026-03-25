@@ -48,7 +48,7 @@ export default async function TasksPage({
       assignees: {
         include: {
           staff: {
-            select: { staffid: true, firstname: true, lastname: true },
+            select: { staffid: true, firstName: true, lastName: true },
           },
         },
       },
@@ -124,8 +124,8 @@ export default async function TasksPage({
                 : null,
             assignees: task.assignees.map((a) => ({
               id: a.id,
-              firstname: a.staff.firstname,
-              lastname: a.staff.lastname,
+              firstName: a.staff.firstName,
+              lastName: a.staff.lastName,
             })),
           }))}
         />
@@ -183,7 +183,7 @@ export default async function TasksPage({
                         <TableCell>
                           <div className="flex -space-x-2">
                             {task.assignees.map((a) => {
-                              const name = `${a.staff.firstname ?? ""} ${a.staff.lastname ?? ""}`.trim();
+                              const name = `${a.staff.firstName ?? ""} ${a.staff.lastName ?? ""}`.trim();
                               return (
                                 <Avatar
                                   key={a.id}

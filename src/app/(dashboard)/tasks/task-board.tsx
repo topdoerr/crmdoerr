@@ -16,8 +16,8 @@ interface TaskItem {
   projectName: string | null;
   assignees: {
     id: number;
-    firstname: string | null;
-    lastname: string | null;
+    firstName: string;
+    lastName: string;
   }[];
 }
 
@@ -114,7 +114,7 @@ export default function TaskBoard({ tasks }: TaskBoardProps) {
                       {/* Assignee avatars */}
                       <div className="flex -space-x-1.5">
                         {task.assignees.slice(0, 3).map((a) => {
-                          const name = `${a.firstname ?? ""} ${a.lastname ?? ""}`.trim();
+                          const name = `${a.firstName ?? ""} ${a.lastName ?? ""}`.trim();
                           return (
                             <Avatar
                               key={a.id}

@@ -32,15 +32,14 @@ export default async function ProposalDetailPage({
 }) {
   const proposal = await prisma.proposal.findUnique({
     where: { id: Number(params.id) },
-    include: {
-      lineItems: {
-        where: { relType: "proposal" },
-        orderBy: { itemOrder: "asc" },
-      },
-    },
   });
 
   if (!proposal) notFound();
+
+  const lineItems = await prisma.lineItem.findMany({
+    where: { relId: proposal.id, relType: "proposal" },
+    orderBy: { itemOrder: "asc" },
+  });
 
   const statusInfo = PROPOSAL_STATUSES[proposal.status ?? 0];
 
@@ -101,7 +100,7 @@ export default async function ProposalDetailPage({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {proposal.lineItems.length === 0 ? (
+                  {lineItems.length === 0 ? (
                     <TableRow>
                       <TableCell
                         colSpan={5}
@@ -111,7 +110,7 @@ export default async function ProposalDetailPage({
                       </TableCell>
                     </TableRow>
                   ) : (
-                    proposal.lineItems.map((item, index) => (
+                    lineItems.map((item, index) => (
                       <TableRow key={item.id}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>

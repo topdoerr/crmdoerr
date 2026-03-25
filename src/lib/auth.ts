@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
@@ -9,22 +8,18 @@ declare module "next-auth" {
     user: {
       id: string;
       email: string;
-      firstname: string;
-      lastname: string;
+      firstName: string;
+      lastName: string;
       admin: boolean;
-      role: number;
-      profileImage: string | null;
     };
   }
 
   interface User {
     id: string;
     email: string;
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     admin: boolean;
-    role: number;
-    profileImage: string | null;
   }
 }
 
@@ -32,16 +27,13 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     email: string;
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     admin: boolean;
-    role: number;
-    profileImage: string | null;
   }
 }
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -78,11 +70,9 @@ export const authOptions: NextAuthOptions = {
         return {
           id: String(staff.staffid),
           email: staff.email,
-          firstname: staff.firstname,
-          lastname: staff.lastname,
+          firstName: staff.firstName,
+          lastName: staff.lastName,
           admin: staff.admin === 1,
-          role: staff.role,
-          profileImage: staff.profile_image,
         };
       },
     }),
@@ -99,11 +89,9 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.firstname = user.firstname;
-        token.lastname = user.lastname;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
         token.admin = user.admin;
-        token.role = user.role;
-        token.profileImage = user.profileImage;
       }
       return token;
     },
@@ -111,11 +99,9 @@ export const authOptions: NextAuthOptions = {
       session.user = {
         id: token.id,
         email: token.email,
-        firstname: token.firstname,
-        lastname: token.lastname,
+        firstName: token.firstName,
+        lastName: token.lastName,
         admin: token.admin,
-        role: token.role,
-        profileImage: token.profileImage,
       };
       return session;
     },

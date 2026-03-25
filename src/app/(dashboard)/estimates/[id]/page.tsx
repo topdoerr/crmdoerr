@@ -33,14 +33,15 @@ export default async function EstimateDetailPage({
     where: { id: Number(params.id) },
     include: {
       client: true,
-      lineItems: {
-        where: { relType: "estimate" },
-        orderBy: { itemOrder: "asc" },
-      },
     },
   });
 
   if (!estimate) notFound();
+
+  const lineItems = await prisma.lineItem.findMany({
+    where: { relId: estimate.id, relType: "estimate" },
+    orderBy: { itemOrder: "asc" },
+  });
 
   const statusInfo = ESTIMATE_STATUSES[estimate.status ?? 0];
 
@@ -85,7 +86,7 @@ export default async function EstimateDetailPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {estimate.lineItems.length === 0 ? (
+                {lineItems.length === 0 ? (
                   <TableRow>
                     <TableCell
                       colSpan={5}
@@ -95,7 +96,7 @@ export default async function EstimateDetailPage({
                     </TableCell>
                   </TableRow>
                 ) : (
-                  estimate.lineItems.map((item, index) => (
+                  lineItems.map((item, index) => (
                     <TableRow key={item.id}>
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>

@@ -18,7 +18,7 @@ import Link from "next/link";
 export function Header() {
   const { data: session } = useSession();
   const fullName = session?.user
-    ? `${session.user.firstname} ${session.user.lastname}`
+    ? `${session.user.firstName} ${session.user.lastName}`
     : "";
 
   return (
@@ -38,7 +38,7 @@ export function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={session?.user?.profileImage || undefined} />
+              <AvatarImage src={undefined} />
               <AvatarFallback className="bg-forest-600 text-white text-xs">
                 {fullName ? getInitials(fullName) : "?"}
               </AvatarFallback>

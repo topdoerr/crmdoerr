@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 export async function createLead(formData: FormData) {
   const data = {
-    name: (formData.get("name") as string) || null,
+    name: (formData.get("name") as string) || "",
     title: (formData.get("title") as string) || null,
     company: (formData.get("company") as string) || null,
     email: (formData.get("email") as string) || null,
@@ -14,11 +14,11 @@ export async function createLead(formData: FormData) {
     city: (formData.get("city") as string) || null,
     state: (formData.get("state") as string) || null,
     zip: (formData.get("zip") as string) || null,
-    country: (formData.get("country") as string) || null,
+    country: formData.get("country") ? Number(formData.get("country")) : null,
     website: (formData.get("website") as string) || null,
-    status: formData.get("status") ? Number(formData.get("status")) : null,
+    status: formData.get("status") ? Number(formData.get("status")) : 1,
     source: formData.get("source") ? Number(formData.get("source")) : null,
-    assigned: formData.get("assigned") ? Number(formData.get("assigned")) : 0,
+    assigned: formData.get("assigned") ? Number(formData.get("assigned")) : null,
     leadValue: formData.get("leadValue")
       ? Number(formData.get("leadValue"))
       : null,
@@ -35,17 +35,17 @@ export async function createLead(formData: FormData) {
 
 export async function updateLead(id: number, formData: FormData) {
   const data = {
-    name: (formData.get("name") as string) || null,
-    title: (formData.get("title") as string) || null,
-    company: (formData.get("company") as string) || null,
-    email: (formData.get("email") as string) || null,
-    phonenumber: (formData.get("phonenumber") as string) || null,
-    address: (formData.get("address") as string) || null,
-    city: (formData.get("city") as string) || null,
-    state: (formData.get("state") as string) || null,
-    zip: (formData.get("zip") as string) || null,
-    country: (formData.get("country") as string) || null,
-    website: (formData.get("website") as string) || null,
+    name: (formData.get("name") as string) || undefined,
+    title: (formData.get("title") as string) || undefined,
+    company: (formData.get("company") as string) || undefined,
+    email: (formData.get("email") as string) || undefined,
+    phonenumber: (formData.get("phonenumber") as string) || undefined,
+    address: (formData.get("address") as string) || undefined,
+    city: (formData.get("city") as string) || undefined,
+    state: (formData.get("state") as string) || undefined,
+    zip: (formData.get("zip") as string) || undefined,
+    country: formData.get("country") ? Number(formData.get("country")) : undefined,
+    website: (formData.get("website") as string) || undefined,
     status: formData.get("status") ? Number(formData.get("status")) : undefined,
     source: formData.get("source") ? Number(formData.get("source")) : undefined,
     assigned: formData.get("assigned")

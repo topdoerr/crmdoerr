@@ -15,10 +15,10 @@ async function updateProfile(formData: FormData) {
   await prisma.staff.update({
     where: { staffid: staffId },
     data: {
-      firstName: (formData.get("firstName") as string) || null,
-      lastName: (formData.get("lastName") as string) || null,
-      email: (formData.get("email") as string) || null,
-      phonenumber: (formData.get("phonenumber") as string) || null,
+      firstName: (formData.get("firstName") as string) || undefined,
+      lastName: (formData.get("lastName") as string) || undefined,
+      email: (formData.get("email") as string) || undefined,
+      phonenumber: (formData.get("phonenumber") as string) || undefined,
     },
   });
 

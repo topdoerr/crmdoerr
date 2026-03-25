@@ -26,7 +26,6 @@ export default async function ClientsPage({
       ? {
           company: {
             contains: search,
-            mode: "insensitive",
           },
         }
       : undefined,

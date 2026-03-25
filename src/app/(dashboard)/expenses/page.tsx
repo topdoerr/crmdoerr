@@ -17,7 +17,7 @@ import { DollarSign, Receipt, CreditCard } from "lucide-react";
 export default async function ExpensesPage() {
   const expenses = await prisma.expense.findMany({
     include: {
-      expenseCategory: true,
+      expenseCategoryRel: true,
       expenseClient: true,
     },
     orderBy: { date: "desc" },
@@ -117,7 +117,7 @@ export default async function ExpensesPage() {
                       {expense.expenseName || "—"}
                     </TableCell>
                     <TableCell>
-                      {expense.expenseCategory?.name || "—"}
+                      {expense.expenseCategoryRel?.name || "—"}
                     </TableCell>
                     <TableCell>
                       {expense.amount

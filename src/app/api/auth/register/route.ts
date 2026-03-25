@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
   try {
-    const { firstname, lastname, email, password } = await request.json();
+    const { firstName, lastName, email, password } = await request.json();
 
     const existing = await prisma.staff.findFirst({ where: { email } });
     if (existing) {
@@ -18,14 +18,12 @@ export async function POST(request: Request) {
 
     await prisma.staff.create({
       data: {
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         email,
         password: hashedPassword,
         admin: 0,
-        role: 0,
         active: 1,
-        datecreated: new Date(),
       },
     });
 

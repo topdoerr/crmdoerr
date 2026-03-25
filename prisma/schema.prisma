@@ -1,0 +1,424 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Staff {
+  staffid     Int      @id @default(autoincrement())
+  email       String   @unique @db.VarChar(100)
+  password    String   @db.VarChar(255)
+  firstName   String   @map("firstname") @db.VarChar(50)
+  lastName    String   @map("lastname") @db.VarChar(50)
+  phonenumber String?  @db.VarChar(30)
+  active      Int      @default(1) @db.TinyInt
+  admin       Int      @default(0) @db.TinyInt
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  taskAssignments TaskAssigned[]
+  projectMembers  ProjectMember[]
+
+  @@map("tblstaff")
+}
+
+model Client {
+  id              Int      @id @default(autoincrement())
+  company         String   @db.VarChar(191)
+  vat             String?  @db.VarChar(50)
+  phonenumber     String?  @db.VarChar(30)
+  website         String?  @db.VarChar(150)
+  address         String?  @db.VarChar(191)
+  city            String?  @db.VarChar(100)
+  state           String?  @db.VarChar(100)
+  zip             String?  @db.VarChar(15)
+  country         Int?     @default(0)
+  billingStreet   String?  @map("billing_street") @db.VarChar(200)
+  billingCity     String?  @map("billing_city") @db.VarChar(100)
+  billingState    String?  @map("billing_state") @db.VarChar(100)
+  billingZip      String?  @map("billing_zip") @db.VarChar(15)
+  billingCountry  Int?     @default(0) @map("billing_country")
+  shippingStreet  String?  @map("shipping_street") @db.VarChar(200)
+  shippingCity    String?  @map("shipping_city") @db.VarChar(100)
+  shippingState   String?  @map("shipping_state") @db.VarChar(100)
+  shippingZip     String?  @map("shipping_zip") @db.VarChar(15)
+  shippingCountry Int?     @default(0) @map("shipping_country")
+  active          Int      @default(1) @db.TinyInt
+  datecreated     DateTime @default(now())
+
+  contacts  Contact[]
+  invoices  Invoice[]
+  projects  Project[]
+  contracts Contract[]
+  expenses  Expense[]
+  leads     Lead[]
+  estimates Estimate[]
+
+  @@map("tblclients")
+}
+
+model Contact {
+  id          Int     @id @default(autoincrement())
+  clientId    Int     @map("userid")
+  firstName   String  @map("firstname") @db.VarChar(50)
+  lastName    String  @map("lastname") @db.VarChar(50)
+  email       String  @db.VarChar(100)
+  phonenumber String? @db.VarChar(30)
+  title       String? @db.VarChar(100)
+  isPrimary   Int     @default(0) @map("is_primary") @db.TinyInt
+  active      Int     @default(1) @db.TinyInt
+  password    String? @db.VarChar(255)
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  @@map("tblcontacts")
+}
+
+model Invoice {
+  id              Int      @id @default(autoincrement())
+  clientId        Int      @map("clientid")
+  number          Int
+  prefix          String?  @db.VarChar(10)
+  date            DateTime @db.Date
+  dueDate         DateTime @map("duedate") @db.Date
+  subtotal        Decimal  @default(0) @db.Decimal(15, 2)
+  totalTax        Decimal  @default(0) @map("total_tax") @db.Decimal(15, 2)
+  discountPercent Decimal  @default(0) @map("discount_percent") @db.Decimal(15, 2)
+  discountTotal   Decimal  @default(0) @map("discount_total") @db.Decimal(15, 2)
+  adjustment      Decimal  @default(0) @db.Decimal(15, 2)
+  total           Decimal  @default(0) @db.Decimal(15, 2)
+  status          Int      @default(1)
+  clientNote      String?  @map("clientnote") @db.Text
+  adminNote       String?  @map("adminnote") @db.Text
+  datecreated     DateTime @default(now())
+
+  client   Client    @relation(fields: [clientId], references: [id])
+  payments Payment[]
+
+  @@map("tblinvoices")
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  invoiceId     Int      @map("invoiceid")
+  amount        Decimal  @db.Decimal(15, 2)
+  date          DateTime @db.Date
+  paymentMode   String?  @map("paymentmode") @db.VarChar(40)
+  note          String?  @db.Text
+  transactionId String?  @map("transactionid") @db.VarChar(100)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@map("tblpayments")
+}
+
+model LineItem {
+  id              Int     @id @default(autoincrement())
+  relId           Int     @map("rel_id")
+  relType         String  @map("rel_type") @db.VarChar(20)
+  description     String  @db.VarChar(191)
+  longDescription String? @map("long_description") @db.Text
+  qty             Decimal @default(1) @db.Decimal(15, 2)
+  rate            Decimal @default(0) @db.Decimal(15, 2)
+  unit            String? @db.VarChar(40)
+  itemOrder       Int?    @default(0) @map("item_order")
+
+  @@index([relId, relType])
+  @@map("tblitems_in")
+}
+
+model Estimate {
+  id              Int      @id @default(autoincrement())
+  clientId        Int      @map("clientid")
+  prefix          String?  @db.VarChar(10)
+  number          Int
+  referenceNo     String?  @map("reference_no") @db.VarChar(100)
+  date            DateTime @db.Date
+  expirydate      DateTime @db.Date
+  subtotal        Decimal  @default(0) @db.Decimal(15, 2)
+  totalTax        Decimal  @default(0) @map("total_tax") @db.Decimal(15, 2)
+  discountPercent Decimal  @default(0) @map("discount_percent") @db.Decimal(15, 2)
+  discountTotal   Decimal  @default(0) @map("discount_total") @db.Decimal(15, 2)
+  adjustment      Decimal  @default(0) @db.Decimal(15, 2)
+  total           Decimal  @default(0) @db.Decimal(15, 2)
+  status          Int      @default(1)
+  datecreated     DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], map: "fk_estimate_client")
+
+  @@map("tblestimates")
+}
+
+model Proposal {
+  id         Int      @id @default(autoincrement())
+  subject    String   @db.VarChar(191)
+  proposalTo String?  @map("proposal_to") @db.VarChar(191)
+  content    String?  @db.LongText
+  date       DateTime @db.Date
+  openTill   DateTime? @map("open_till") @db.Date
+  subtotal   Decimal  @default(0) @db.Decimal(15, 2)
+  total      Decimal  @default(0) @db.Decimal(15, 2)
+  status     Int      @default(1)
+  datecreated DateTime @default(now())
+
+  @@map("tblproposals")
+}
+
+model Contract {
+  id            Int      @id @default(autoincrement())
+  client        Int      @map("client")
+  subject       String   @db.VarChar(191)
+  description   String?  @db.Text
+  content       String?  @db.LongText
+  contractType  Int?     @map("contract_type")
+  contractValue Decimal? @map("contract_value") @db.Decimal(15, 2)
+  datestart     DateTime @db.Date
+  dateend       DateTime? @db.Date
+  signed        Int      @default(0) @db.TinyInt
+  trash         Int      @default(0) @db.TinyInt
+  datecreated   DateTime @default(now())
+
+  contractClient  Client        @relation(fields: [client], references: [id])
+  contractTypeRel ContractType? @relation(fields: [contractType], references: [id])
+
+  @@map("tblcontracts")
+}
+
+model ContractType {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(191)
+
+  contracts Contract[]
+
+  @@map("tblcontracttypes")
+}
+
+model Project {
+  id                 Int       @id @default(autoincrement())
+  name               String    @db.VarChar(191)
+  description        String?   @db.Text
+  status             Int       @default(1)
+  clientId           Int       @map("clientid")
+  billingType        Int       @default(1) @map("billing_type")
+  startDate          DateTime  @map("start_date") @db.Date
+  deadline           DateTime? @db.Date
+  projectCost        Decimal?  @default(0) @map("project_cost") @db.Decimal(15, 2)
+  projectRatePerHour Decimal?  @default(0) @map("project_rate_per_hour") @db.Decimal(15, 2)
+  estimatedHours     Decimal?  @default(0) @map("estimated_hours") @db.Decimal(15, 2)
+  progress           Int       @default(0)
+  addedfrom          Int?
+  dateFinished       DateTime? @map("date_finished")
+  projectCreated     DateTime  @default(now()) @map("project_created")
+
+  client  Client          @relation(fields: [clientId], references: [id])
+  members ProjectMember[]
+  tasks   Task[]
+  notes   Note[]
+
+  @@map("tblprojects")
+}
+
+model ProjectMember {
+  id        Int @id @default(autoincrement())
+  projectId Int @map("project_id")
+  staffId   Int @map("staff_id")
+
+  project Project @relation(fields: [projectId], references: [id])
+  staff   Staff   @relation(fields: [staffId], references: [staffid])
+
+  @@unique([projectId, staffId])
+  @@map("tblproject_members")
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(191)
+  description String?   @db.Text
+  priority    Int       @default(0)
+  status      Int       @default(1)
+  startdate   DateTime? @db.Date
+  duedate     DateTime? @db.Date
+  datefinished DateTime?
+  relId       Int?      @map("rel_id")
+  relType     String?   @map("rel_type") @db.VarChar(20)
+  isPublic    Int       @default(0) @map("is_public") @db.TinyInt
+  billable    Int       @default(0) @db.TinyInt
+  kanbanOrder Int       @default(0) @map("kanban_order")
+  dateadded   DateTime  @default(now())
+
+  project   Project?       @relation(fields: [relId], references: [id], map: "fk_task_project")
+  assignees TaskAssigned[]
+
+  @@index([relId, relType])
+  @@map("tbltasks")
+}
+
+model TaskAssigned {
+  id      Int @id @default(autoincrement())
+  taskId  Int @map("taskid")
+  staffId Int @map("staffid")
+
+  task  Task  @relation(fields: [taskId], references: [id])
+  staff Staff @relation(fields: [staffId], references: [staffid])
+
+  @@unique([taskId, staffId])
+  @@map("tbltask_assigned")
+}
+
+model Lead {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(191)
+  title         String?   @db.VarChar(100)
+  company       String?   @db.VarChar(191)
+  email         String?   @db.VarChar(100)
+  phonenumber   String?   @db.VarChar(30)
+  address       String?   @db.VarChar(191)
+  city          String?   @db.VarChar(100)
+  state         String?   @db.VarChar(100)
+  zip           String?   @db.VarChar(15)
+  country       Int?      @default(0)
+  website       String?   @db.VarChar(150)
+  status        Int       @default(1)
+  source        Int?
+  assigned      Int?
+  leadValue     Decimal?  @map("lead_value") @db.Decimal(15, 2)
+  dateadded     DateTime  @default(now())
+  lost          Int       @default(0) @db.TinyInt
+  junk          Int       @default(0) @db.TinyInt
+  clientId      Int?      @map("clientid")
+  dateConverted DateTime? @map("date_converted")
+
+  leadStatus LeadStatus? @relation(fields: [status], references: [id])
+  leadSource LeadSource? @relation(fields: [source], references: [id])
+  client     Client?     @relation(fields: [clientId], references: [id])
+
+  @@map("tblleads")
+}
+
+model LeadStatus {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(50)
+  statusorder Int    @default(0)
+  color       String @default("#333") @db.VarChar(10)
+
+  leads Lead[]
+
+  @@map("tbllead_status")
+}
+
+model LeadSource {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+  leads Lead[]
+
+  @@map("tbllead_sources")
+}
+
+model Ticket {
+  ticketid Int      @id @default(autoincrement())
+  ticketkey String? @db.VarChar(20)
+  subject  String   @db.VarChar(191)
+  message  String   @db.LongText
+  email    String?  @db.VarChar(100)
+  name     String?  @db.VarChar(100)
+  department Int?
+  priority Int      @default(0)
+  status   Int      @default(1)
+  date     DateTime @default(now())
+  assigned Int?
+  userid   Int?
+  contactid Int?
+  lastreply DateTime?
+
+  ticketStatus   TicketStatus?   @relation(fields: [status], references: [ticketstatusid])
+  ticketPriority TicketPriority? @relation(fields: [priority], references: [id])
+  replies        TicketReply[]
+
+  @@map("tbltickets")
+}
+
+model TicketReply {
+  id       Int      @id @default(autoincrement())
+  ticketid Int
+  message  String   @db.LongText
+  date     DateTime @default(now())
+  name     String?  @db.VarChar(100)
+  email    String?  @db.VarChar(100)
+  admin    Int?
+
+  ticket Ticket @relation(fields: [ticketid], references: [ticketid])
+
+  @@map("tblticket_replies")
+}
+
+model TicketStatus {
+  ticketstatusid Int    @id @default(autoincrement())
+  name           String @db.VarChar(50)
+  statusorder    Int    @default(0)
+  statuscolor    String @default("#333") @db.VarChar(10)
+
+  tickets Ticket[]
+
+  @@map("tblticket_status")
+}
+
+model TicketPriority {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(50)
+
+  tickets Ticket[]
+
+  @@map("tblticket_priorities")
+}
+
+model Expense {
+  id              Int      @id @default(autoincrement())
+  expenseName     String   @map("expense_name") @db.VarChar(191)
+  expenseCategory Int?     @map("category")
+  clientId        Int?     @map("clientid")
+  amount          Decimal  @db.Decimal(15, 2)
+  date            DateTime @db.Date
+  billable        Int      @default(0) @db.TinyInt
+  invoiceid       Int?
+  datecreated     DateTime @default(now())
+
+  expenseClient      Client?          @relation(fields: [clientId], references: [id])
+  expenseCategoryRel ExpenseCategory? @relation(fields: [expenseCategory], references: [id])
+
+  @@map("tblexpenses")
+}
+
+model ExpenseCategory {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+  expenses Expense[]
+
+  @@map("tblexpense_categories")
+}
+
+model Note {
+  id            Int      @id @default(autoincrement())
+  relId         Int      @map("rel_id")
+  relType       String   @map("rel_type") @db.VarChar(20)
+  description   String   @db.Text
+  datecontacted DateTime @default(now())
+  addedfrom     Int?
+
+  project Project? @relation(fields: [relId], references: [id], map: "fk_note_project")
+
+  @@index([relId, relType])
+  @@map("tblnotes")
+}
+
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  description String   @db.Text
+  date        DateTime @default(now())
+  staffid     Int?
+
+  @@map("tblactivity_log")
+}
