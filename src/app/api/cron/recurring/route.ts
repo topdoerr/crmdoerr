@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 function computeNext(from: Date, type: string, value: number): Date {
   const d = new Date(from);
   if (type === "day") d.setDate(d.getDate() + value);

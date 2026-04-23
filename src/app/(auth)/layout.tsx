@@ -1,5 +1,7 @@
 import { Providers } from "@/components/layout/providers";
 
+export const dynamic = "force-dynamic";
+
 export default function AuthLayout({
   children,
 }: {
