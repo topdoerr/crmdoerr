@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { InvoicesHeader } from "./invoices-header";
 
 const invoiceStatuses: Record<number, { label: string; variant: string }> = {
   1: { label: "Unpaid", variant: "warning" },
@@ -67,17 +68,25 @@ export default async function InvoicesPage({
     0
   );
 
+  const clients = await prisma.client.findMany({
+    where: { active: 1 },
+    select: { id: true, company: true },
+    orderBy: { company: "asc" },
+  });
+
+  const lastInvoice = await prisma.invoice.findFirst({
+    orderBy: { number: "desc" },
+    select: { number: true },
+  });
+  const nextNumber = (lastInvoice?.number ?? 0) + 1;
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Invoices</h1>
-          <Badge variant="secondary">{totalCount}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/invoices?modal=new">Create Invoice</Link>
-        </Button>
-      </div>
+      <InvoicesHeader
+        totalCount={totalCount}
+        clients={clients}
+        nextNumber={nextNumber}
+      />
 
       <Tabs defaultValue={statusFilter?.toString() || "all"}>
         <TabsList>

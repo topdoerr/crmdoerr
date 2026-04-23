@@ -44,8 +44,8 @@ export async function createInvoice(data: CreateInvoiceData) {
       discountPercent: data.discountPercent ?? 0,
       discountTotal: data.discountTotal ?? 0,
       adjustment: data.adjustment ?? 0,
-      clientNote: data.clientNote || null,
-      adminNote: data.adminNote || null,
+      clientNote: data.clientNote || undefined,
+      adminNote: data.adminNote || undefined,
       status: data.status ?? 6,
     },
   });
@@ -56,10 +56,10 @@ export async function createInvoice(data: CreateInvoiceData) {
         relId: invoice.id,
         relType: "invoice",
         description: item.description,
-        longDescription: item.longDescription || null,
+        longDescription: item.longDescription || undefined,
         qty: item.qty,
         rate: item.rate,
-        unit: item.unit || null,
+        unit: item.unit || undefined,
         itemOrder: item.itemOrder ?? index + 1,
       })),
     });

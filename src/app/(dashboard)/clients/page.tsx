@@ -2,7 +2,6 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ClientsHeader } from "./clients-header";
 
 export default async function ClientsPage({
   searchParams,
@@ -40,15 +40,7 @@ export default async function ClientsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Clients</h1>
-          <Badge variant="secondary">{clients.length}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/clients?modal=new">Add Client</Link>
-        </Button>
-      </div>
+      <ClientsHeader count={clients.length} />
 
       <Card>
         <CardContent className="pt-6">

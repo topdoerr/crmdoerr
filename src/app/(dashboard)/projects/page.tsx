@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ProjectForm } from "./project-form";
 
 const PROJECT_STATUS: Record<
   number,
@@ -64,6 +65,12 @@ export default async function ProjectsPage({
     orderBy: { projectCreated: "desc" },
   });
 
+  const clients = await prisma.client.findMany({
+    where: { active: 1 },
+    select: { id: true, company: true },
+    orderBy: { company: "asc" },
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -71,9 +78,7 @@ export default async function ProjectsPage({
           <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
           <Badge variant="secondary">{projects.length}</Badge>
         </div>
-        <Button asChild>
-          <Link href="/projects?modal=new">New Project</Link>
-        </Button>
+        <ProjectForm clients={clients} />
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">
