@@ -422,3 +422,301 @@ model ActivityLog {
 
   @@map("tblactivity_log")
 }
+
+model TaskTimer {
+  id        Int       @id @default(autoincrement())
+  taskId    Int       @map("task_id")
+  staffId   Int       @map("staff_id")
+  startTime DateTime  @map("start_time")
+  endTime   DateTime? @map("end_time")
+  hourlyRate Decimal? @map("hourly_rate") @db.Decimal(15, 2)
+  note      String?   @db.Text
+
+  @@index([taskId])
+  @@index([staffId])
+  @@map("tbltaskstimers")
+}
+
+model FileAttachment {
+  id           Int      @id @default(autoincrement())
+  relId        Int      @map("rel_id")
+  relType      String   @map("rel_type") @db.VarChar(30)
+  fileName     String   @map("file_name") @db.VarChar(191)
+  fileType     String?  @map("file_type") @db.VarChar(40)
+  fileSize     Int?     @map("file_size")
+  filePath     String   @map("file_path") @db.VarChar(500)
+  staffId      Int?     @map("staff_id")
+  contactId    Int?     @map("contact_id")
+  dateAdded    DateTime @default(now()) @map("date_added")
+
+  @@index([relId, relType])
+  @@map("tblfiles")
+}
+
+model EmailTemplate {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(191)
+  slug        String   @unique @db.VarChar(100)
+  subject     String   @db.VarChar(191)
+  message     String   @db.LongText
+  fromName    String?  @map("from_name") @db.VarChar(100)
+  fromEmail   String?  @map("from_email") @db.VarChar(100)
+  plainText   Int      @default(0) @map("plain_text") @db.TinyInt
+  active      Int      @default(1) @db.TinyInt
+
+  @@map("tblemailtemplates")
+}
+
+model EmailQueue {
+  id        Int      @id @default(autoincrement())
+  toEmail   String   @map("to_email") @db.VarChar(191)
+  toName    String?  @map("to_name") @db.VarChar(100)
+  subject   String   @db.VarChar(191)
+  message   String   @db.LongText
+  attempts  Int      @default(0)
+  status    String   @default("pending") @db.VarChar(20)
+  error     String?  @db.Text
+  sentAt    DateTime? @map("sent_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("tblemailqueue")
+}
+
+model CalendarEvent {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(191)
+  description String?   @db.Text
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime? @map("end_date")
+  color       String?   @default("#03a9f4") @db.VarChar(10)
+  isPublic    Int       @default(0) @map("is_public") @db.TinyInt
+  staffId     Int?      @map("staff_id")
+  reminderBefore Int?   @map("reminder_before")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([staffId])
+  @@index([startDate])
+  @@map("tblevents")
+}
+
+model KnowledgeBaseArticle {
+  id           Int      @id @default(autoincrement())
+  subject      String   @db.VarChar(191)
+  slug         String   @unique @db.VarChar(191)
+  description  String   @db.LongText
+  groupId      Int?     @map("group_id")
+  active       Int      @default(1) @db.TinyInt
+  staffArticle Int      @default(0) @map("staff_article") @db.TinyInt
+  views        Int      @default(0)
+  datecreated  DateTime @default(now())
+
+  group KnowledgeBaseGroup? @relation(fields: [groupId], references: [id])
+
+  @@index([groupId])
+  @@map("tblknowledgebase")
+}
+
+model KnowledgeBaseGroup {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(191)
+  description String?  @db.Text
+  groupOrder  Int      @default(0) @map("group_order")
+  color       String?  @default("#2a88d5") @db.VarChar(10)
+  active      Int      @default(1) @db.TinyInt
+
+  articles KnowledgeBaseArticle[]
+
+  @@map("tblknowledgebase_groups")
+}
+
+model CustomField {
+  id           Int      @id @default(autoincrement())
+  fieldTo      String   @map("field_to") @db.VarChar(30)
+  name         String   @db.VarChar(191)
+  slug         String   @db.VarChar(100)
+  required     Int      @default(0) @db.TinyInt
+  fieldType    String   @map("field_type") @db.VarChar(30)
+  options      String?  @db.Text
+  displayOrder Int      @default(0) @map("display_order")
+  active       Int      @default(1) @db.TinyInt
+  showOnTable  Int      @default(0) @map("show_on_table") @db.TinyInt
+  showOnPdf    Int      @default(0) @map("show_on_pdf") @db.TinyInt
+  onlyAdmin    Int      @default(0) @map("only_admin") @db.TinyInt
+
+  values CustomFieldValue[]
+
+  @@index([fieldTo])
+  @@map("tblcustomfields")
+}
+
+model CustomFieldValue {
+  id         Int    @id @default(autoincrement())
+  fieldId    Int    @map("field_id")
+  relId      Int    @map("rel_id")
+  fieldTo    String @map("field_to") @db.VarChar(30)
+  value      String @db.Text
+
+  field CustomField @relation(fields: [fieldId], references: [id])
+
+  @@index([fieldId, relId, fieldTo])
+  @@map("tblcustomfieldsvalues")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  permissions String?  @db.LongText
+
+  @@map("tblroles")
+}
+
+model StaffPermission {
+  id           Int    @id @default(autoincrement())
+  staffId      Int    @map("staff_id")
+  feature      String @db.VarChar(80)
+  capability   String @db.VarChar(20)
+
+  @@unique([staffId, feature, capability])
+  @@index([staffId])
+  @@map("tblstaff_permissions")
+}
+
+model RecurringInvoice {
+  id             Int       @id @default(autoincrement())
+  clientId       Int       @map("clientid")
+  subtotal       Decimal   @default(0) @db.Decimal(15, 2)
+  total          Decimal   @default(0) @db.Decimal(15, 2)
+  recurringType  String    @map("recurring_type") @db.VarChar(20)
+  recurringValue Int       @map("recurring_value")
+  lastCreated    DateTime? @map("last_created")
+  nextCreation   DateTime? @map("next_creation")
+  cycles         Int       @default(0)
+  totalCycles    Int       @default(0) @map("total_cycles")
+  active         Int       @default(1) @db.TinyInt
+  datecreated    DateTime  @default(now())
+
+  @@index([clientId])
+  @@map("tblrecurring_invoices")
+}
+
+model Subscription {
+  id                Int       @id @default(autoincrement())
+  name              String    @db.VarChar(191)
+  description       String?   @db.Text
+  clientId          Int       @map("clientid")
+  currency          Int       @default(1)
+  price             Decimal   @db.Decimal(15, 2)
+  tax               Decimal?  @default(0) @db.Decimal(15, 2)
+  status            String    @default("not_subscribed") @db.VarChar(30)
+  quantity          Int       @default(1)
+  nextBillingCycle  DateTime? @map("next_billing_cycle")
+  dateSubscribed    DateTime? @map("date_subscribed")
+  dateCanceled      DateTime? @map("date_canceled")
+  stripeSubscription String?  @map("stripe_subscription_id") @db.VarChar(191)
+  datecreated       DateTime  @default(now())
+
+  @@index([clientId])
+  @@map("tblsubscriptions")
+}
+
+model Announcement {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(191)
+  message     String   @db.LongText
+  showToStaff Int      @default(1) @map("show_to_staff") @db.TinyInt
+  showToClients Int    @default(0) @map("show_to_clients") @db.TinyInt
+  showFrom    Int?     @map("show_from")
+  dateStart   DateTime? @map("date_start")
+  dateEnd     DateTime? @map("date_end")
+  datecreated DateTime @default(now())
+
+  @@map("tblannouncements")
+}
+
+model Goal {
+  id           Int      @id @default(autoincrement())
+  subject      String   @db.VarChar(191)
+  description  String?  @db.Text
+  startDate    DateTime @map("start_date") @db.Date
+  endDate      DateTime @map("end_date") @db.Date
+  goalType     Int      @map("goal_type")
+  contractType Int?     @map("contract_type")
+  achievement  String   @default("0") @db.VarChar(20)
+  notifyWhenAchieved Int @default(1) @map("notify_when_achieved") @db.TinyInt
+  notifyStaff  Int      @default(0) @map("notify_staff") @db.TinyInt
+
+  @@map("tblgoals")
+}
+
+model Survey {
+  id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(191)
+  description      String?  @db.Text
+  fromEmail        String?  @map("from_email") @db.VarChar(100)
+  fromName         String?  @map("from_name") @db.VarChar(100)
+  subject          String?  @db.VarChar(191)
+  emailBody        String?  @map("email_body") @db.LongText
+  active           Int      @default(1) @db.TinyInt
+  forStaff         Int      @default(0) @map("for_staff") @db.TinyInt
+  availableToStaff Int      @default(0) @map("available_to_staff") @db.TinyInt
+  createdBy        Int?     @map("created_by")
+  datecreated      DateTime @default(now())
+
+  questions SurveyQuestion[]
+
+  @@map("tblsurveys")
+}
+
+model SurveyQuestion {
+  id           Int     @id @default(autoincrement())
+  surveyId     Int     @map("survey_id")
+  question     String  @db.Text
+  questionOrder Int    @default(0) @map("question_order")
+  questionType String  @map("question_type") @db.VarChar(30)
+  required     Int     @default(0) @db.TinyInt
+
+  survey Survey @relation(fields: [surveyId], references: [id])
+
+  @@map("tblsurvey_questions")
+}
+
+model Currency {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(10)
+  symbol      String  @db.VarChar(5)
+  decimalSeparator String @default(",") @map("decimal_separator") @db.VarChar(1)
+  thousandSeparator String @default(".") @map("thousand_separator") @db.VarChar(1)
+  placement   String  @default("before") @db.VarChar(10)
+  isDefault   Int     @default(0) @map("isdefault") @db.TinyInt
+
+  @@map("tblcurrencies")
+}
+
+model Tax {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar(191)
+  taxRate  Decimal @map("taxrate") @db.Decimal(15, 5)
+
+  @@map("tbltaxes")
+}
+
+model Department {
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(191)
+  email          String? @db.VarChar(191)
+  imapUsername   String? @map("imap_username") @db.VarChar(191)
+  emailPassword  String? @map("email_password") @db.VarChar(191)
+  calendarId     String? @map("calendar_id") @db.VarChar(191)
+  hidefromClient Int     @default(0) @map("hidefromclient") @db.TinyInt
+
+  @@map("tbldepartments")
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  name  String @unique @db.VarChar(191)
+  value String @db.LongText
+
+  @@map("tbloptions")
+}
+

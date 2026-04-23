@@ -18,21 +18,39 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  Clock,
+  Calendar,
+  BookOpen,
+  UserCog,
+  BarChart3,
+  Megaphone,
+  Trophy,
+  ClipboardList,
+  RefreshCw,
 } from "lucide-react";
 import { useState } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Clients", href: "/clients", icon: Users },
-  { name: "Invoices", href: "/invoices", icon: FileText },
+  { name: "Leads", href: "/leads", icon: Target },
   { name: "Projects", href: "/projects", icon: FolderKanban },
   { name: "Tasks", href: "/tasks", icon: CheckSquare },
-  { name: "Leads", href: "/leads", icon: Target },
+  { name: "Time Tracking", href: "/timesheets", icon: Clock },
+  { name: "Calendar", href: "/calendar", icon: Calendar },
   { name: "Tickets", href: "/tickets", icon: Ticket },
   { name: "Estimates", href: "/estimates", icon: Calculator },
   { name: "Proposals", href: "/proposals", icon: FileSignature },
   { name: "Contracts", href: "/contracts", icon: ScrollText },
+  { name: "Invoices", href: "/invoices", icon: FileText },
+  { name: "Subscriptions", href: "/subscriptions", icon: RefreshCw },
   { name: "Expenses", href: "/expenses", icon: Receipt },
+  { name: "Knowledge Base", href: "/knowledge-base", icon: BookOpen },
+  { name: "Reports", href: "/reports", icon: BarChart3 },
+  { name: "Announcements", href: "/announcements", icon: Megaphone },
+  { name: "Goals", href: "/goals", icon: Trophy },
+  { name: "Surveys", href: "/surveys", icon: ClipboardList },
+  { name: "Staff", href: "/staff", icon: UserCog },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
@@ -68,7 +86,7 @@ export function Sidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 space-y-1 p-2">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-2">
         {navigation.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(item.href + "/");
