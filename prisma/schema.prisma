@@ -3,19 +3,19 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Staff {
   staffid     Int      @id @default(autoincrement())
-  email       String   @unique @db.VarChar(100)
-  password    String   @db.VarChar(255)
-  firstName   String   @map("firstname") @db.VarChar(50)
-  lastName    String   @map("lastname") @db.VarChar(50)
-  phonenumber String?  @db.VarChar(30)
-  active      Int      @default(1) @db.TinyInt
-  admin       Int      @default(0) @db.TinyInt
+  email       String   @unique
+  password    String  
+  firstName   String   @map("firstname")
+  lastName    String   @map("lastname")
+  phonenumber String? 
+  active      Int      @default(1)
+  admin       Int      @default(0)
   createdAt   DateTime @default(now()) @map("created_at")
 
   taskAssignments TaskAssigned[]
@@ -26,26 +26,26 @@ model Staff {
 
 model Client {
   id              Int      @id @default(autoincrement())
-  company         String   @db.VarChar(191)
-  vat             String?  @db.VarChar(50)
-  phonenumber     String?  @db.VarChar(30)
-  website         String?  @db.VarChar(150)
-  address         String?  @db.VarChar(191)
-  city            String?  @db.VarChar(100)
-  state           String?  @db.VarChar(100)
-  zip             String?  @db.VarChar(15)
+  company         String  
+  vat             String? 
+  phonenumber     String? 
+  website         String? 
+  address         String? 
+  city            String? 
+  state           String? 
+  zip             String? 
   country         Int?     @default(0)
-  billingStreet   String?  @map("billing_street") @db.VarChar(200)
-  billingCity     String?  @map("billing_city") @db.VarChar(100)
-  billingState    String?  @map("billing_state") @db.VarChar(100)
-  billingZip      String?  @map("billing_zip") @db.VarChar(15)
+  billingStreet   String?  @map("billing_street")
+  billingCity     String?  @map("billing_city")
+  billingState    String?  @map("billing_state")
+  billingZip      String?  @map("billing_zip")
   billingCountry  Int?     @default(0) @map("billing_country")
-  shippingStreet  String?  @map("shipping_street") @db.VarChar(200)
-  shippingCity    String?  @map("shipping_city") @db.VarChar(100)
-  shippingState   String?  @map("shipping_state") @db.VarChar(100)
-  shippingZip     String?  @map("shipping_zip") @db.VarChar(15)
+  shippingStreet  String?  @map("shipping_street")
+  shippingCity    String?  @map("shipping_city")
+  shippingState   String?  @map("shipping_state")
+  shippingZip     String?  @map("shipping_zip")
   shippingCountry Int?     @default(0) @map("shipping_country")
-  active          Int      @default(1) @db.TinyInt
+  active          Int      @default(1)
   datecreated     DateTime @default(now())
 
   contacts  Contact[]
@@ -62,14 +62,14 @@ model Client {
 model Contact {
   id          Int     @id @default(autoincrement())
   clientId    Int     @map("userid")
-  firstName   String  @map("firstname") @db.VarChar(50)
-  lastName    String  @map("lastname") @db.VarChar(50)
-  email       String  @db.VarChar(100)
-  phonenumber String? @db.VarChar(30)
-  title       String? @db.VarChar(100)
-  isPrimary   Int     @default(0) @map("is_primary") @db.TinyInt
-  active      Int     @default(1) @db.TinyInt
-  password    String? @db.VarChar(255)
+  firstName   String  @map("firstname")
+  lastName    String  @map("lastname")
+  email       String 
+  phonenumber String?
+  title       String?
+  isPrimary   Int     @default(0) @map("is_primary")
+  active      Int     @default(1)
+  password    String?
 
   client Client @relation(fields: [clientId], references: [id])
 
@@ -80,18 +80,18 @@ model Invoice {
   id              Int      @id @default(autoincrement())
   clientId        Int      @map("clientid")
   number          Int
-  prefix          String?  @db.VarChar(10)
-  date            DateTime @db.Date
-  dueDate         DateTime @map("duedate") @db.Date
-  subtotal        Decimal  @default(0) @db.Decimal(15, 2)
-  totalTax        Decimal  @default(0) @map("total_tax") @db.Decimal(15, 2)
-  discountPercent Decimal  @default(0) @map("discount_percent") @db.Decimal(15, 2)
-  discountTotal   Decimal  @default(0) @map("discount_total") @db.Decimal(15, 2)
-  adjustment      Decimal  @default(0) @db.Decimal(15, 2)
-  total           Decimal  @default(0) @db.Decimal(15, 2)
+  prefix          String? 
+  date            DateTime
+  dueDate         DateTime @map("duedate")
+  subtotal        Decimal  @default(0)
+  totalTax        Decimal  @default(0) @map("total_tax")
+  discountPercent Decimal  @default(0) @map("discount_percent")
+  discountTotal   Decimal  @default(0) @map("discount_total")
+  adjustment      Decimal  @default(0)
+  total           Decimal  @default(0)
   status          Int      @default(1)
-  clientNote      String?  @map("clientnote") @db.Text
-  adminNote       String?  @map("adminnote") @db.Text
+  clientNote      String?  @map("clientnote")
+  adminNote       String?  @map("adminnote")
   datecreated     DateTime @default(now())
 
   client   Client    @relation(fields: [clientId], references: [id])
@@ -103,11 +103,11 @@ model Invoice {
 model Payment {
   id            Int      @id @default(autoincrement())
   invoiceId     Int      @map("invoiceid")
-  amount        Decimal  @db.Decimal(15, 2)
-  date          DateTime @db.Date
-  paymentMode   String?  @map("paymentmode") @db.VarChar(40)
-  note          String?  @db.Text
-  transactionId String?  @map("transactionid") @db.VarChar(100)
+  amount        Decimal 
+  date          DateTime
+  paymentMode   String?  @map("paymentmode")
+  note          String? 
+  transactionId String?  @map("transactionid")
 
   invoice Invoice @relation(fields: [invoiceId], references: [id])
 
@@ -117,12 +117,12 @@ model Payment {
 model LineItem {
   id              Int     @id @default(autoincrement())
   relId           Int     @map("rel_id")
-  relType         String  @map("rel_type") @db.VarChar(20)
-  description     String  @db.VarChar(191)
-  longDescription String? @map("long_description") @db.Text
-  qty             Decimal @default(1) @db.Decimal(15, 2)
-  rate            Decimal @default(0) @db.Decimal(15, 2)
-  unit            String? @db.VarChar(40)
+  relType         String  @map("rel_type")
+  description     String 
+  longDescription String? @map("long_description")
+  qty             Decimal @default(1)
+  rate            Decimal @default(0)
+  unit            String?
   itemOrder       Int?    @default(0) @map("item_order")
 
   @@index([relId, relType])
@@ -132,34 +132,34 @@ model LineItem {
 model Estimate {
   id              Int      @id @default(autoincrement())
   clientId        Int      @map("clientid")
-  prefix          String?  @db.VarChar(10)
+  prefix          String? 
   number          Int
-  referenceNo     String?  @map("reference_no") @db.VarChar(100)
-  date            DateTime @db.Date
-  expirydate      DateTime @db.Date
-  subtotal        Decimal  @default(0) @db.Decimal(15, 2)
-  totalTax        Decimal  @default(0) @map("total_tax") @db.Decimal(15, 2)
-  discountPercent Decimal  @default(0) @map("discount_percent") @db.Decimal(15, 2)
-  discountTotal   Decimal  @default(0) @map("discount_total") @db.Decimal(15, 2)
-  adjustment      Decimal  @default(0) @db.Decimal(15, 2)
-  total           Decimal  @default(0) @db.Decimal(15, 2)
+  referenceNo     String?  @map("reference_no")
+  date            DateTime
+  expirydate      DateTime
+  subtotal        Decimal  @default(0)
+  totalTax        Decimal  @default(0) @map("total_tax")
+  discountPercent Decimal  @default(0) @map("discount_percent")
+  discountTotal   Decimal  @default(0) @map("discount_total")
+  adjustment      Decimal  @default(0)
+  total           Decimal  @default(0)
   status          Int      @default(1)
   datecreated     DateTime @default(now())
 
-  client Client @relation(fields: [clientId], references: [id], map: "fk_estimate_client")
+  client Client @relation(fields: [clientId], references: [id])
 
   @@map("tblestimates")
 }
 
 model Proposal {
   id         Int      @id @default(autoincrement())
-  subject    String   @db.VarChar(191)
-  proposalTo String?  @map("proposal_to") @db.VarChar(191)
-  content    String?  @db.LongText
-  date       DateTime @db.Date
-  openTill   DateTime? @map("open_till") @db.Date
-  subtotal   Decimal  @default(0) @db.Decimal(15, 2)
-  total      Decimal  @default(0) @db.Decimal(15, 2)
+  subject    String  
+  proposalTo String?  @map("proposal_to")
+  content    String? 
+  date       DateTime
+  openTill   DateTime? @map("open_till")
+  subtotal   Decimal  @default(0)
+  total      Decimal  @default(0)
   status     Int      @default(1)
   datecreated DateTime @default(now())
 
@@ -169,15 +169,15 @@ model Proposal {
 model Contract {
   id            Int      @id @default(autoincrement())
   client        Int      @map("client")
-  subject       String   @db.VarChar(191)
-  description   String?  @db.Text
-  content       String?  @db.LongText
+  subject       String  
+  description   String? 
+  content       String? 
   contractType  Int?     @map("contract_type")
-  contractValue Decimal? @map("contract_value") @db.Decimal(15, 2)
-  datestart     DateTime @db.Date
-  dateend       DateTime? @db.Date
-  signed        Int      @default(0) @db.TinyInt
-  trash         Int      @default(0) @db.TinyInt
+  contractValue Decimal? @map("contract_value")
+  datestart     DateTime
+  dateend       DateTime?
+  signed        Int      @default(0)
+  trash         Int      @default(0)
   datecreated   DateTime @default(now())
 
   contractClient  Client        @relation(fields: [client], references: [id])
@@ -188,7 +188,7 @@ model Contract {
 
 model ContractType {
   id   Int    @id @default(autoincrement())
-  name String @db.VarChar(191)
+  name String
 
   contracts Contract[]
 
@@ -197,16 +197,16 @@ model ContractType {
 
 model Project {
   id                 Int       @id @default(autoincrement())
-  name               String    @db.VarChar(191)
-  description        String?   @db.Text
+  name               String   
+  description        String?  
   status             Int       @default(1)
   clientId           Int       @map("clientid")
   billingType        Int       @default(1) @map("billing_type")
-  startDate          DateTime  @map("start_date") @db.Date
-  deadline           DateTime? @db.Date
-  projectCost        Decimal?  @default(0) @map("project_cost") @db.Decimal(15, 2)
-  projectRatePerHour Decimal?  @default(0) @map("project_rate_per_hour") @db.Decimal(15, 2)
-  estimatedHours     Decimal?  @default(0) @map("estimated_hours") @db.Decimal(15, 2)
+  startDate          DateTime  @map("start_date")
+  deadline           DateTime?
+  projectCost        Decimal?  @default(0) @map("project_cost")
+  projectRatePerHour Decimal?  @default(0) @map("project_rate_per_hour")
+  estimatedHours     Decimal?  @default(0) @map("estimated_hours")
   progress           Int       @default(0)
   addedfrom          Int?
   dateFinished       DateTime? @map("date_finished")
@@ -234,21 +234,21 @@ model ProjectMember {
 
 model Task {
   id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(191)
-  description String?   @db.Text
+  name        String   
+  description String?  
   priority    Int       @default(0)
   status      Int       @default(1)
-  startdate   DateTime? @db.Date
-  duedate     DateTime? @db.Date
+  startdate   DateTime?
+  duedate     DateTime?
   datefinished DateTime?
   relId       Int?      @map("rel_id")
-  relType     String?   @map("rel_type") @db.VarChar(20)
-  isPublic    Int       @default(0) @map("is_public") @db.TinyInt
-  billable    Int       @default(0) @db.TinyInt
+  relType     String?   @map("rel_type")
+  isPublic    Int       @default(0) @map("is_public")
+  billable    Int       @default(0)
   kanbanOrder Int       @default(0) @map("kanban_order")
   dateadded   DateTime  @default(now())
 
-  project   Project?       @relation(fields: [relId], references: [id], map: "fk_task_project")
+  project   Project?       @relation(fields: [relId], references: [id])
   assignees TaskAssigned[]
 
   @@index([relId, relType])
@@ -269,24 +269,24 @@ model TaskAssigned {
 
 model Lead {
   id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(191)
-  title         String?   @db.VarChar(100)
-  company       String?   @db.VarChar(191)
-  email         String?   @db.VarChar(100)
-  phonenumber   String?   @db.VarChar(30)
-  address       String?   @db.VarChar(191)
-  city          String?   @db.VarChar(100)
-  state         String?   @db.VarChar(100)
-  zip           String?   @db.VarChar(15)
+  name          String   
+  title         String?  
+  company       String?  
+  email         String?  
+  phonenumber   String?  
+  address       String?  
+  city          String?  
+  state         String?  
+  zip           String?  
   country       Int?      @default(0)
-  website       String?   @db.VarChar(150)
+  website       String?  
   status        Int       @default(1)
   source        Int?
   assigned      Int?
-  leadValue     Decimal?  @map("lead_value") @db.Decimal(15, 2)
+  leadValue     Decimal?  @map("lead_value")
   dateadded     DateTime  @default(now())
-  lost          Int       @default(0) @db.TinyInt
-  junk          Int       @default(0) @db.TinyInt
+  lost          Int       @default(0)
+  junk          Int       @default(0)
   clientId      Int?      @map("clientid")
   dateConverted DateTime? @map("date_converted")
 
@@ -299,9 +299,9 @@ model Lead {
 
 model LeadStatus {
   id          Int    @id @default(autoincrement())
-  name        String @db.VarChar(50)
+  name        String
   statusorder Int    @default(0)
-  color       String @default("#333") @db.VarChar(10)
+  color       String @default("#333")
 
   leads Lead[]
 
@@ -310,7 +310,7 @@ model LeadStatus {
 
 model LeadSource {
   id   Int    @id @default(autoincrement())
-  name String @db.VarChar(100)
+  name String
 
   leads Lead[]
 
@@ -319,11 +319,11 @@ model LeadSource {
 
 model Ticket {
   ticketid Int      @id @default(autoincrement())
-  ticketkey String? @db.VarChar(20)
-  subject  String   @db.VarChar(191)
-  message  String   @db.LongText
-  email    String?  @db.VarChar(100)
-  name     String?  @db.VarChar(100)
+  ticketkey String?
+  subject  String  
+  message  String  
+  email    String? 
+  name     String? 
   department Int?
   priority Int      @default(0)
   status   Int      @default(1)
@@ -343,10 +343,10 @@ model Ticket {
 model TicketReply {
   id       Int      @id @default(autoincrement())
   ticketid Int
-  message  String   @db.LongText
+  message  String  
   date     DateTime @default(now())
-  name     String?  @db.VarChar(100)
-  email    String?  @db.VarChar(100)
+  name     String? 
+  email    String? 
   admin    Int?
 
   ticket Ticket @relation(fields: [ticketid], references: [ticketid])
@@ -356,9 +356,9 @@ model TicketReply {
 
 model TicketStatus {
   ticketstatusid Int    @id @default(autoincrement())
-  name           String @db.VarChar(50)
+  name           String
   statusorder    Int    @default(0)
-  statuscolor    String @default("#333") @db.VarChar(10)
+  statuscolor    String @default("#333")
 
   tickets Ticket[]
 
@@ -367,7 +367,7 @@ model TicketStatus {
 
 model TicketPriority {
   id   Int    @id @default(autoincrement())
-  name String @db.VarChar(50)
+  name String
 
   tickets Ticket[]
 
@@ -376,12 +376,12 @@ model TicketPriority {
 
 model Expense {
   id              Int      @id @default(autoincrement())
-  expenseName     String   @map("expense_name") @db.VarChar(191)
+  expenseName     String   @map("expense_name")
   expenseCategory Int?     @map("category")
   clientId        Int?     @map("clientid")
-  amount          Decimal  @db.Decimal(15, 2)
-  date            DateTime @db.Date
-  billable        Int      @default(0) @db.TinyInt
+  amount          Decimal 
+  date            DateTime
+  billable        Int      @default(0)
   invoiceid       Int?
   datecreated     DateTime @default(now())
 
@@ -393,7 +393,7 @@ model Expense {
 
 model ExpenseCategory {
   id   Int    @id @default(autoincrement())
-  name String @db.VarChar(100)
+  name String
 
   expenses Expense[]
 
@@ -403,12 +403,12 @@ model ExpenseCategory {
 model Note {
   id            Int      @id @default(autoincrement())
   relId         Int      @map("rel_id")
-  relType       String   @map("rel_type") @db.VarChar(20)
-  description   String   @db.Text
+  relType       String   @map("rel_type")
+  description   String  
   datecontacted DateTime @default(now())
   addedfrom     Int?
 
-  project Project? @relation(fields: [relId], references: [id], map: "fk_note_project")
+  project Project? @relation(fields: [relId], references: [id])
 
   @@index([relId, relType])
   @@map("tblnotes")
@@ -416,7 +416,7 @@ model Note {
 
 model ActivityLog {
   id          Int      @id @default(autoincrement())
-  description String   @db.Text
+  description String  
   date        DateTime @default(now())
   staffid     Int?
 
@@ -429,8 +429,8 @@ model TaskTimer {
   staffId   Int       @map("staff_id")
   startTime DateTime  @map("start_time")
   endTime   DateTime? @map("end_time")
-  hourlyRate Decimal? @map("hourly_rate") @db.Decimal(15, 2)
-  note      String?   @db.Text
+  hourlyRate Decimal? @map("hourly_rate")
+  note      String?  
 
   @@index([taskId])
   @@index([staffId])
@@ -440,11 +440,11 @@ model TaskTimer {
 model FileAttachment {
   id           Int      @id @default(autoincrement())
   relId        Int      @map("rel_id")
-  relType      String   @map("rel_type") @db.VarChar(30)
-  fileName     String   @map("file_name") @db.VarChar(191)
-  fileType     String?  @map("file_type") @db.VarChar(40)
+  relType      String   @map("rel_type")
+  fileName     String   @map("file_name")
+  fileType     String?  @map("file_type")
   fileSize     Int?     @map("file_size")
-  filePath     String   @map("file_path") @db.VarChar(500)
+  filePath     String   @map("file_path")
   staffId      Int?     @map("staff_id")
   contactId    Int?     @map("contact_id")
   dateAdded    DateTime @default(now()) @map("date_added")
@@ -455,27 +455,27 @@ model FileAttachment {
 
 model EmailTemplate {
   id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(191)
-  slug        String   @unique @db.VarChar(100)
-  subject     String   @db.VarChar(191)
-  message     String   @db.LongText
-  fromName    String?  @map("from_name") @db.VarChar(100)
-  fromEmail   String?  @map("from_email") @db.VarChar(100)
-  plainText   Int      @default(0) @map("plain_text") @db.TinyInt
-  active      Int      @default(1) @db.TinyInt
+  name        String  
+  slug        String   @unique
+  subject     String  
+  message     String  
+  fromName    String?  @map("from_name")
+  fromEmail   String?  @map("from_email")
+  plainText   Int      @default(0) @map("plain_text")
+  active      Int      @default(1)
 
   @@map("tblemailtemplates")
 }
 
 model EmailQueue {
   id        Int      @id @default(autoincrement())
-  toEmail   String   @map("to_email") @db.VarChar(191)
-  toName    String?  @map("to_name") @db.VarChar(100)
-  subject   String   @db.VarChar(191)
-  message   String   @db.LongText
+  toEmail   String   @map("to_email")
+  toName    String?  @map("to_name")
+  subject   String  
+  message   String  
   attempts  Int      @default(0)
-  status    String   @default("pending") @db.VarChar(20)
-  error     String?  @db.Text
+  status    String   @default("pending")
+  error     String? 
   sentAt    DateTime? @map("sent_at")
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -484,12 +484,12 @@ model EmailQueue {
 
 model CalendarEvent {
   id          Int       @id @default(autoincrement())
-  title       String    @db.VarChar(191)
-  description String?   @db.Text
+  title       String   
+  description String?  
   startDate   DateTime  @map("start_date")
   endDate     DateTime? @map("end_date")
-  color       String?   @default("#03a9f4") @db.VarChar(10)
-  isPublic    Int       @default(0) @map("is_public") @db.TinyInt
+  color       String?   @default("#03a9f4")
+  isPublic    Int       @default(0) @map("is_public")
   staffId     Int?      @map("staff_id")
   reminderBefore Int?   @map("reminder_before")
   createdAt   DateTime  @default(now()) @map("created_at")
@@ -501,12 +501,12 @@ model CalendarEvent {
 
 model KnowledgeBaseArticle {
   id           Int      @id @default(autoincrement())
-  subject      String   @db.VarChar(191)
-  slug         String   @unique @db.VarChar(191)
-  description  String   @db.LongText
+  subject      String  
+  slug         String   @unique
+  description  String  
   groupId      Int?     @map("group_id")
-  active       Int      @default(1) @db.TinyInt
-  staffArticle Int      @default(0) @map("staff_article") @db.TinyInt
+  active       Int      @default(1)
+  staffArticle Int      @default(0) @map("staff_article")
   views        Int      @default(0)
   datecreated  DateTime @default(now())
 
@@ -518,11 +518,11 @@ model KnowledgeBaseArticle {
 
 model KnowledgeBaseGroup {
   id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(191)
-  description String?  @db.Text
+  name        String  
+  description String? 
   groupOrder  Int      @default(0) @map("group_order")
-  color       String?  @default("#2a88d5") @db.VarChar(10)
-  active      Int      @default(1) @db.TinyInt
+  color       String?  @default("#2a88d5")
+  active      Int      @default(1)
 
   articles KnowledgeBaseArticle[]
 
@@ -531,17 +531,17 @@ model KnowledgeBaseGroup {
 
 model CustomField {
   id           Int      @id @default(autoincrement())
-  fieldTo      String   @map("field_to") @db.VarChar(30)
-  name         String   @db.VarChar(191)
-  slug         String   @db.VarChar(100)
-  required     Int      @default(0) @db.TinyInt
-  fieldType    String   @map("field_type") @db.VarChar(30)
-  options      String?  @db.Text
+  fieldTo      String   @map("field_to")
+  name         String  
+  slug         String  
+  required     Int      @default(0)
+  fieldType    String   @map("field_type")
+  options      String? 
   displayOrder Int      @default(0) @map("display_order")
-  active       Int      @default(1) @db.TinyInt
-  showOnTable  Int      @default(0) @map("show_on_table") @db.TinyInt
-  showOnPdf    Int      @default(0) @map("show_on_pdf") @db.TinyInt
-  onlyAdmin    Int      @default(0) @map("only_admin") @db.TinyInt
+  active       Int      @default(1)
+  showOnTable  Int      @default(0) @map("show_on_table")
+  showOnPdf    Int      @default(0) @map("show_on_pdf")
+  onlyAdmin    Int      @default(0) @map("only_admin")
 
   values CustomFieldValue[]
 
@@ -553,8 +553,8 @@ model CustomFieldValue {
   id         Int    @id @default(autoincrement())
   fieldId    Int    @map("field_id")
   relId      Int    @map("rel_id")
-  fieldTo    String @map("field_to") @db.VarChar(30)
-  value      String @db.Text
+  fieldTo    String @map("field_to")
+  value      String
 
   field CustomField @relation(fields: [fieldId], references: [id])
 
@@ -564,8 +564,8 @@ model CustomFieldValue {
 
 model Role {
   id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(100)
-  permissions String?  @db.LongText
+  name        String  
+  permissions String? 
 
   @@map("tblroles")
 }
@@ -573,8 +573,8 @@ model Role {
 model StaffPermission {
   id           Int    @id @default(autoincrement())
   staffId      Int    @map("staff_id")
-  feature      String @db.VarChar(80)
-  capability   String @db.VarChar(20)
+  feature      String
+  capability   String
 
   @@unique([staffId, feature, capability])
   @@index([staffId])
@@ -584,15 +584,15 @@ model StaffPermission {
 model RecurringInvoice {
   id             Int       @id @default(autoincrement())
   clientId       Int       @map("clientid")
-  subtotal       Decimal   @default(0) @db.Decimal(15, 2)
-  total          Decimal   @default(0) @db.Decimal(15, 2)
-  recurringType  String    @map("recurring_type") @db.VarChar(20)
+  subtotal       Decimal   @default(0)
+  total          Decimal   @default(0)
+  recurringType  String    @map("recurring_type")
   recurringValue Int       @map("recurring_value")
   lastCreated    DateTime? @map("last_created")
   nextCreation   DateTime? @map("next_creation")
   cycles         Int       @default(0)
   totalCycles    Int       @default(0) @map("total_cycles")
-  active         Int       @default(1) @db.TinyInt
+  active         Int       @default(1)
   datecreated    DateTime  @default(now())
 
   @@index([clientId])
@@ -601,18 +601,18 @@ model RecurringInvoice {
 
 model Subscription {
   id                Int       @id @default(autoincrement())
-  name              String    @db.VarChar(191)
-  description       String?   @db.Text
+  name              String   
+  description       String?  
   clientId          Int       @map("clientid")
   currency          Int       @default(1)
-  price             Decimal   @db.Decimal(15, 2)
-  tax               Decimal?  @default(0) @db.Decimal(15, 2)
-  status            String    @default("not_subscribed") @db.VarChar(30)
+  price             Decimal  
+  tax               Decimal?  @default(0)
+  status            String    @default("not_subscribed")
   quantity          Int       @default(1)
   nextBillingCycle  DateTime? @map("next_billing_cycle")
   dateSubscribed    DateTime? @map("date_subscribed")
   dateCanceled      DateTime? @map("date_canceled")
-  stripeSubscription String?  @map("stripe_subscription_id") @db.VarChar(191)
+  stripeSubscription String?  @map("stripe_subscription_id")
   datecreated       DateTime  @default(now())
 
   @@index([clientId])
@@ -621,10 +621,10 @@ model Subscription {
 
 model Announcement {
   id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(191)
-  message     String   @db.LongText
-  showToStaff Int      @default(1) @map("show_to_staff") @db.TinyInt
-  showToClients Int    @default(0) @map("show_to_clients") @db.TinyInt
+  name        String  
+  message     String  
+  showToStaff Int      @default(1) @map("show_to_staff")
+  showToClients Int    @default(0) @map("show_to_clients")
   showFrom    Int?     @map("show_from")
   dateStart   DateTime? @map("date_start")
   dateEnd     DateTime? @map("date_end")
@@ -635,30 +635,30 @@ model Announcement {
 
 model Goal {
   id           Int      @id @default(autoincrement())
-  subject      String   @db.VarChar(191)
-  description  String?  @db.Text
-  startDate    DateTime @map("start_date") @db.Date
-  endDate      DateTime @map("end_date") @db.Date
+  subject      String  
+  description  String? 
+  startDate    DateTime @map("start_date")
+  endDate      DateTime @map("end_date")
   goalType     Int      @map("goal_type")
   contractType Int?     @map("contract_type")
-  achievement  String   @default("0") @db.VarChar(20)
-  notifyWhenAchieved Int @default(1) @map("notify_when_achieved") @db.TinyInt
-  notifyStaff  Int      @default(0) @map("notify_staff") @db.TinyInt
+  achievement  String   @default("0")
+  notifyWhenAchieved Int @default(1) @map("notify_when_achieved")
+  notifyStaff  Int      @default(0) @map("notify_staff")
 
   @@map("tblgoals")
 }
 
 model Survey {
   id               Int      @id @default(autoincrement())
-  name             String   @db.VarChar(191)
-  description      String?  @db.Text
-  fromEmail        String?  @map("from_email") @db.VarChar(100)
-  fromName         String?  @map("from_name") @db.VarChar(100)
-  subject          String?  @db.VarChar(191)
-  emailBody        String?  @map("email_body") @db.LongText
-  active           Int      @default(1) @db.TinyInt
-  forStaff         Int      @default(0) @map("for_staff") @db.TinyInt
-  availableToStaff Int      @default(0) @map("available_to_staff") @db.TinyInt
+  name             String  
+  description      String? 
+  fromEmail        String?  @map("from_email")
+  fromName         String?  @map("from_name")
+  subject          String? 
+  emailBody        String?  @map("email_body")
+  active           Int      @default(1)
+  forStaff         Int      @default(0) @map("for_staff")
+  availableToStaff Int      @default(0) @map("available_to_staff")
   createdBy        Int?     @map("created_by")
   datecreated      DateTime @default(now())
 
@@ -670,10 +670,10 @@ model Survey {
 model SurveyQuestion {
   id           Int     @id @default(autoincrement())
   surveyId     Int     @map("survey_id")
-  question     String  @db.Text
+  question     String 
   questionOrder Int    @default(0) @map("question_order")
-  questionType String  @map("question_type") @db.VarChar(30)
-  required     Int     @default(0) @db.TinyInt
+  questionType String  @map("question_type")
+  required     Int     @default(0)
 
   survey Survey @relation(fields: [surveyId], references: [id])
 
@@ -682,40 +682,40 @@ model SurveyQuestion {
 
 model Currency {
   id          Int     @id @default(autoincrement())
-  name        String  @db.VarChar(10)
-  symbol      String  @db.VarChar(5)
-  decimalSeparator String @default(",") @map("decimal_separator") @db.VarChar(1)
-  thousandSeparator String @default(".") @map("thousand_separator") @db.VarChar(1)
-  placement   String  @default("before") @db.VarChar(10)
-  isDefault   Int     @default(0) @map("isdefault") @db.TinyInt
+  name        String 
+  symbol      String 
+  decimalSeparator String @default(",") @map("decimal_separator")
+  thousandSeparator String @default(".") @map("thousand_separator")
+  placement   String  @default("before")
+  isDefault   Int     @default(0) @map("isdefault")
 
   @@map("tblcurrencies")
 }
 
 model Tax {
   id       Int     @id @default(autoincrement())
-  name     String  @db.VarChar(191)
-  taxRate  Decimal @map("taxrate") @db.Decimal(15, 5)
+  name     String 
+  taxRate  Decimal @map("taxrate")
 
   @@map("tbltaxes")
 }
 
 model Department {
   id             Int     @id @default(autoincrement())
-  name           String  @db.VarChar(191)
-  email          String? @db.VarChar(191)
-  imapUsername   String? @map("imap_username") @db.VarChar(191)
-  emailPassword  String? @map("email_password") @db.VarChar(191)
-  calendarId     String? @map("calendar_id") @db.VarChar(191)
-  hidefromClient Int     @default(0) @map("hidefromclient") @db.TinyInt
+  name           String 
+  email          String?
+  imapUsername   String? @map("imap_username")
+  emailPassword  String? @map("email_password")
+  calendarId     String? @map("calendar_id")
+  hidefromClient Int     @default(0) @map("hidefromclient")
 
   @@map("tbldepartments")
 }
 
 model Setting {
   id    Int    @id @default(autoincrement())
-  name  String @unique @db.VarChar(191)
-  value String @db.LongText
+  name  String @unique
+  value String
 
   @@map("tbloptions")
 }
