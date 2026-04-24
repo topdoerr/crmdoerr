@@ -1,72 +1,31 @@
-########################################
-# OS / editor junk
-########################################
+# OS / editor
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
 *.swp
-__MACOSX/
-**/__MACOSX/
 
-########################################
-# Runtime user data (NEVER commit)
-########################################
-/uploads/
-modules/**/uploads/
-media/
-temp/
-tmp/
+# Dependencies
+node_modules/
 
-########################################
-# Logs / cache (runtime)
-########################################
-*.log
-application/logs/
-application/cache/
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
 
-########################################
 # Secrets / environment
-########################################
 .env
 .env.*
 *.env
 !.env.example
-application/config/app-config.php
-/config/app-config.php
 
-
-########################################
-# PHP dependencies (rebuild with composer)
-########################################
-/vendor/
-application/vendor/
-modules/**/vendor/
-
-########################################
-# Node dependencies (rebuild with npm/yarn)
-########################################
-node_modules/
-**/node_modules/
-
-########################################
-# Build artifacts (only if you rebuild in CI)
-# If you DON'T rebuild assets, comment these out.
-########################################
-# assets/builds/
-# modules/**/assets/builds/
-# dist/
-# build/
-
-########################################
-# Next.js
-########################################
-.next/
-out/
-next-env.d.ts
-
-
-# TS incremental build info
-*.tsbuildinfo
+# Database
 prisma/dev.db
 prisma/dev.db-journal
+
+# Uploads
+/public/uploads/
+
+# Logs
+*.log

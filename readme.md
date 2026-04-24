@@ -1,96 +1,153 @@
-# CRM Platform - Levantar en local
+# CRM Doerr
 
-Guia para clonar el repo y correr una copia local similar a produccion.
+Full-featured CRM built with Next.js 14, TypeScript, Tailwind CSS, and Prisma.
 
-## 1. Requisitos
+## Features
 
-* PHP `8.1.x` recomendado (probado: `8.1.2`, mismo entorno que prod).
-* Composer `2.x`.
-* Node.js + npm (el repo usa `package-lock` v3).
-* Base de datos MySQL/MariaDB con backup de datos.
-* Extensiones PHP requeridas:
-  * `bcmath`, `ctype`, `curl`, `dom`, `filter`, `hash`, `imap`, `json`, `libxml`, `openssl`, `xmlwriter`
-  * `mysqli`, `pdo_mysql`
-  * `mbstring` (o polyfill; recomendado tener la extension activa)
+- **Clients** - Company management with contacts, billing/shipping addresses
+- **Leads** - Pipeline with kanban board, conversion to clients
+- **Projects** - Project tracking with team members, progress, billing types
+- **Tasks** - Task management with kanban board, assignees, timers
+- **Time Tracking** - Timesheets with start/stop timers, hourly rates
+- **Calendar** - Month view with event creation and color coding
+- **Tickets** - Support tickets with threaded replies, priorities, departments
+- **Estimates** - Estimate creation with line items and PDF export
+- **Proposals** - Proposal management with content editor
+- **Contracts** - Contract tracking with signature status
+- **Invoices** - Invoice management with line items, payments, PDF export
+- **Recurring Invoices** - Automated invoice generation on schedule
+- **Subscriptions** - Subscription billing management
+- **Expenses** - Expense tracking by category, billable flag
+- **Knowledge Base** - Articles organized by groups
+- **Reports** - Sales, leads, projects, expenses, and customer analytics
+- **Staff** - Staff management with role-based permissions
+- **Roles & Permissions** - Feature-level access control
+- **Custom Fields** - Add custom fields to any module
+- **Email Templates** - SMTP integration with template system
+- **File Attachments** - File uploads on any record
+- **Announcements** - Internal announcements for staff/clients
+- **Goals** - Goal tracking with progress
+- **Surveys** - Survey builder with question types
+- **Settings** - Profile and company configuration
 
-Si te falta una extension, habilitala en `php.ini` (ejemplo):
-    extension=mysqli
-    extension=pdo_mysql
-    extension=imap
-    extension=mbstring
+## Tech Stack
 
-## 2. Clonar e instalar dependencias
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **Database**: PostgreSQL via Prisma ORM
+- **Auth**: NextAuth.js v4 (JWT + Credentials)
+- **Charts**: Recharts
+- **PDF**: @react-pdf/renderer
+- **Email**: Nodemailer
 
-Desde la raiz del proyecto:
-    git clone <repo-url>
-    cd crm_platform
-    npm install
+## Quick Deploy to Vercel
 
-Instalar dependencias PHP dentro de `application`:
-    cd application
-    composer install
-    cd ..
+### 1. Get a free PostgreSQL database
 
-Importante: `composer install` no va en la raiz porque el `composer.json` esta en `application/`.
+Go to [neon.tech](https://neon.tech) and create a free project. Copy the connection string.
 
-## 3. Configurar app local
+### 2. Deploy
 
-(No olvides crear la abse de datos y utilizar el database.sql en la raiz del proyecto para crear las tablas requeridas)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/topdoerr/crmdoerr)
 
-1. Copiar `application/config/app-config-sample.php` como `application/config/app-config.php`.
-2. Completar en `app-config.php`:
-   * `APP_BASE_URL` (ejemplo: `http://localhost:8000/`)
-   * `APP_DB_HOSTNAME`
-   * `APP_DB_USERNAME`
-   * `APP_DB_PASSWORD`
-   * `APP_DB_NAME`
-3. Verificar que la DB exista y sea accesible.
+### 3. Set environment variables
 
-## 4. Poner entorno en desarrollo
+In Vercel project settings, add:
 
-En `index.php` cambiar:
-    define('ENVIRONMENT', 'production');
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | Your Neon connection string |
+| `NEXTAUTH_SECRET` | Any random string (run `openssl rand -base64 32`) |
+| `NEXTAUTH_URL` | Your Vercel URL (e.g. `https://your-app.vercel.app`) |
 
-por:
-    define('ENVIRONMENT', 'development');
+### 4. Deploy and log in
 
-## 5. Compilar assets front
+The build automatically creates database tables and seeds sample data.
 
-Compilacion local:
-    npm run development
+- **Email**: `admin@crmdoerr.com`
+- **Password**: `admin123`
 
-Compilacion de produccion (si la necesitas):
-    npm run build
+> Change the admin password after first login.
 
-## 6. Levantar servidor local
+## Local Development
 
-Comando recomendado:
-    php -S localhost:8000 -t .
+### Prerequisites
 
-Tambien puedes usar:
-    npm run up
+- Node.js 18+
+- PostgreSQL database (or use Neon free tier)
 
-Abrir en navegador: `http://localhost:8000/`
+### Setup
 
-## 7. Flujo rapido (todo en uno)
+```bash
+# Clone the repo
+git clone https://github.com/topdoerr/crmdoerr.git
+cd crmdoerr
 
-El script `npm run dev` hace:
+# Install dependencies
+npm install
 
-1. `npm run development`
+# Configure environment
+cp .env.example .env
+# Edit .env with your DATABASE_URL, NEXTAUTH_SECRET, NEXTAUTH_URL
 
-2. `composer i` dentro de `application`
+# Create database tables and seed data
+npx prisma db push
+node prisma/seed.js
 
-3. Levanta servidor local
-    npm run dev
+# Start dev server
+npm run dev
+```
 
-## 8. Problemas comunes (basado en pruebas reales)
+Open [http://localhost:3000](http://localhost:3000) and log in with `admin@crmdoerr.com` / `admin123`.
 
-* CSS no carga:
-  * Usa `php -S localhost:8000 -t .` (no `php -S 127.0.0.1:8000 index.php`).
-  * Ejecuta `npm run development`.
-* Error de Composer:
-  * Ejecuta `composer install` dentro de `application/`.
-* Error por extension PHP faltante:
-  * Activar extension en `php.ini` y reiniciar terminal/servidor.
-* Error por version de DB:
-  * Validar compatibilidad de version MySQL/MariaDB con el dump/prod.
+## Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `DATABASE_URL` | Yes | PostgreSQL connection string |
+| `NEXTAUTH_SECRET` | Yes | Secret for JWT signing |
+| `NEXTAUTH_URL` | Yes | Full URL of the app |
+| `SMTP_HOST` | No | SMTP server for sending emails |
+| `SMTP_PORT` | No | SMTP port (default: 587) |
+| `SMTP_USER` | No | SMTP username |
+| `SMTP_PASSWORD` | No | SMTP password |
+| `SMTP_FROM` | No | Default "from" email address |
+
+## Project Structure
+
+```
+src/
+  app/
+    (auth)/           # Login, register, forgot password
+    (dashboard)/      # All CRM modules
+      clients/
+      invoices/
+      projects/
+      tasks/
+      leads/
+      tickets/
+      ...
+    api/              # API routes (auth, PDF, upload, cron)
+  components/
+    ui/               # shadcn/ui components
+    layout/           # Sidebar, header, providers
+    files/            # File upload/list components
+    custom-fields/    # Custom field components
+    reports/          # Chart components
+  lib/
+    auth.ts           # NextAuth configuration
+    prisma.ts         # Prisma client singleton
+    email.ts          # Nodemailer setup
+    upload.ts         # File upload helper
+    permissions.ts    # Permission checking
+    utils.ts          # Formatting utilities
+    pdf/              # PDF document templates
+prisma/
+  schema.prisma       # Database schema (30+ models)
+  seed.js             # Sample data seeder
+```
+
+## License
+
+Private - All rights reserved.
