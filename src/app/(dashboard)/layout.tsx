@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Providers } from "@/components/layout/providers";
+import { AiChat } from "@/components/ai/ai-chat";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ export default function DashboardLayout({
             {children}
           </main>
         </div>
+        <AiChat />
       </div>
     </Providers>
   );
