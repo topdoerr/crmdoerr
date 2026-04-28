@@ -720,3 +720,240 @@ model Setting {
   @@map("tbloptions")
 }
 
+// ─── INTRANET MODELS ────────────────────────────────────
+
+model Message {
+  id          Int       @id @default(autoincrement())
+  fromStaffId Int       @map("from_staff_id")
+  toStaffId   Int       @map("to_staff_id")
+  subject     String?
+  body        String
+  read        Int       @default(0)
+  parentId    Int?      @map("parent_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([toStaffId, read])
+  @@index([fromStaffId])
+  @@map("tblmessages")
+}
+
+model NewsFeedPost {
+  id        Int      @id @default(autoincrement())
+  staffId   Int      @map("staff_id")
+  content   String
+  pinned    Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  comments NewsFeedComment[]
+  likes    NewsFeedLike[]
+
+  @@index([staffId])
+  @@map("tblnewsfeed_posts")
+}
+
+model NewsFeedComment {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @map("post_id")
+  staffId   Int      @map("staff_id")
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  post NewsFeedPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@map("tblnewsfeed_comments")
+}
+
+model NewsFeedLike {
+  id      Int @id @default(autoincrement())
+  postId  Int @map("post_id")
+  staffId Int @map("staff_id")
+
+  post NewsFeedPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, staffId])
+  @@map("tblnewsfeed_likes")
+}
+
+model PtoPolicy {
+  id             Int    @id @default(autoincrement())
+  name           String
+  daysPerYear    Int    @default(15) @map("days_per_year")
+  carryOverMax   Int    @default(5) @map("carry_over_max")
+  requireApproval Int   @default(1) @map("require_approval")
+
+  @@map("tblpto_policies")
+}
+
+model PtoRequest {
+  id          Int       @id @default(autoincrement())
+  staffId     Int       @map("staff_id")
+  type        String    @default("vacation")
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime  @map("end_date")
+  days        Float     @default(1)
+  reason      String?
+  status      String    @default("pending")
+  reviewedBy  Int?      @map("reviewed_by")
+  reviewedAt  DateTime? @map("reviewed_at")
+  reviewNote  String?   @map("review_note")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([staffId])
+  @@index([status])
+  @@map("tblpto_requests")
+}
+
+model PtoBalance {
+  id        Int   @id @default(autoincrement())
+  staffId   Int   @map("staff_id")
+  year      Int
+  allocated Float @default(15)
+  used      Float @default(0)
+  pending   Float @default(0)
+
+  @@unique([staffId, year])
+  @@map("tblpto_balances")
+}
+
+model DocumentFolder {
+  id          Int      @id @default(autoincrement())
+  name        String
+  parentId    Int?     @map("parent_id")
+  createdBy   Int?     @map("created_by")
+  isPublic    Int      @default(1) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([parentId])
+  @@map("tbldocument_folders")
+}
+
+model Document {
+  id          Int      @id @default(autoincrement())
+  folderId    Int?     @map("folder_id")
+  title       String
+  description String?
+  fileName    String   @map("file_name")
+  filePath    String   @map("file_path")
+  fileSize    Int?     @map("file_size")
+  fileType    String?  @map("file_type")
+  version     Int      @default(1)
+  uploadedBy  Int?     @map("uploaded_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+  @@index([folderId])
+  @@map("tbldocuments")
+}
+
+model OnboardingTemplate {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  items OnboardingItem[]
+
+  @@map("tblonboarding_templates")
+}
+
+model OnboardingItem {
+  id          Int    @id @default(autoincrement())
+  templateId  Int    @map("template_id")
+  title       String
+  description String?
+  itemOrder   Int    @default(0) @map("item_order")
+  assignTo    String @default("employee") @map("assign_to")
+
+  template OnboardingTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId])
+  @@map("tblonboarding_items")
+}
+
+model OnboardingProgress {
+  id          Int       @id @default(autoincrement())
+  staffId     Int       @map("staff_id")
+  templateId  Int       @map("template_id")
+  itemId      Int       @map("item_id")
+  completed   Int       @default(0)
+  completedAt DateTime? @map("completed_at")
+
+  @@unique([staffId, itemId])
+  @@index([staffId, templateId])
+  @@map("tblonboarding_progress")
+}
+
+model CompanyPolicy {
+  id              Int      @id @default(autoincrement())
+  title           String
+  content         String
+  version         String   @default("1.0")
+  requireAck      Int      @default(1) @map("require_ack")
+  publishedAt     DateTime @default(now()) @map("published_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  acknowledgements PolicyAcknowledgement[]
+
+  @@map("tblcompany_policies")
+}
+
+model PolicyAcknowledgement {
+  id        Int      @id @default(autoincrement())
+  policyId  Int      @map("policy_id")
+  staffId   Int      @map("staff_id")
+  ackedAt   DateTime @default(now()) @map("acked_at")
+
+  policy CompanyPolicy @relation(fields: [policyId], references: [id], onDelete: Cascade)
+
+  @@unique([policyId, staffId])
+  @@map("tblpolicy_acks")
+}
+
+model MeetingRoom {
+  id          Int    @id @default(autoincrement())
+  name        String
+  location    String?
+  capacity    Int    @default(10)
+  amenities   String?
+  color       String @default("#2196f3")
+  active      Int    @default(1)
+
+  bookings RoomBooking[]
+
+  @@map("tblmeeting_rooms")
+}
+
+model RoomBooking {
+  id          Int      @id @default(autoincrement())
+  roomId      Int      @map("room_id")
+  staffId     Int      @map("staff_id")
+  title       String
+  startTime   DateTime @map("start_time")
+  endTime     DateTime @map("end_time")
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  room MeetingRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, startTime])
+  @@index([staffId])
+  @@map("tblroom_bookings")
+}
+
+model StaffProfile {
+  id          Int      @id @default(autoincrement())
+  staffId     Int      @unique @map("staff_id")
+  birthday    DateTime?
+  startDate   DateTime? @map("start_date")
+  department  String?
+  jobTitle    String?   @map("job_title")
+  location    String?
+  bio         String?
+  phone       String?
+  extension   String?
+  linkedIn    String?   @map("linkedin")
+  reportsTo   Int?      @map("reports_to")
+
+  @@map("tblstaff_profiles")
+}
+
