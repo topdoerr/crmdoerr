@@ -45,20 +45,9 @@ interface NavSection {
 
 const sections: NavSection[] = [
   {
-    label: "Intranet",
+    label: "",
     items: [
       { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-      { name: "News Feed", href: "/feed", icon: Newspaper },
-      { name: "Messages", href: "/messages", icon: Mail },
-      { name: "Calendar", href: "/calendar", icon: Calendar },
-      { name: "Directory", href: "/directory", icon: Contact },
-      { name: "Documents", href: "/documents", icon: FolderOpen },
-      { name: "PTO / Leave", href: "/pto", icon: Palmtree },
-      { name: "Meeting Rooms", href: "/rooms", icon: DoorOpen },
-      { name: "Onboarding", href: "/onboarding", icon: ListChecks },
-      { name: "Policies", href: "/policies", icon: Shield },
-      { name: "Announcements", href: "/announcements", icon: Megaphone },
-      { name: "Knowledge Base", href: "/knowledge-base", icon: BookOpen },
     ],
   },
   {
@@ -76,6 +65,22 @@ const sections: NavSection[] = [
       { name: "Invoices", href: "/invoices", icon: FileText },
       { name: "Subscriptions", href: "/subscriptions", icon: RefreshCw },
       { name: "Expenses", href: "/expenses", icon: Receipt },
+    ],
+  },
+  {
+    label: "Intranet",
+    items: [
+      { name: "News Feed", href: "/feed", icon: Newspaper },
+      { name: "Messages", href: "/messages", icon: Mail },
+      { name: "Calendar", href: "/calendar", icon: Calendar },
+      { name: "Directory", href: "/directory", icon: Contact },
+      { name: "Documents", href: "/documents", icon: FolderOpen },
+      { name: "PTO / Leave", href: "/pto", icon: Palmtree },
+      { name: "Meeting Rooms", href: "/rooms", icon: DoorOpen },
+      { name: "Onboarding", href: "/onboarding", icon: ListChecks },
+      { name: "Policies", href: "/policies", icon: Shield },
+      { name: "Announcements", href: "/announcements", icon: Megaphone },
+      { name: "Knowledge Base", href: "/knowledge-base", icon: BookOpen },
     ],
   },
   {
@@ -123,7 +128,7 @@ export function Sidebar() {
       <nav className="flex-1 overflow-y-auto p-2">
         {sections.map((section) => (
           <div key={section.label} className="mb-3">
-            {!collapsed && (
+            {!collapsed && section.label && (
               <div className="px-3 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-paper/40">
                 {section.label}
               </div>
