@@ -70,7 +70,7 @@ export function AiSummarizer({ content, title }: AiSummarizerProps) {
           <button
             onClick={handleSummarize}
             disabled={loading}
-            className="inline-flex items-center gap-2 rounded-md bg-amber px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-600 disabled:opacity-50"
           >
             {loading ? (
               <>

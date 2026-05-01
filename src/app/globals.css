@@ -1,95 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Geist+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Brand v2: Cream canvas */
-    --background: 50 33% 95%;
-    --foreground: 60 17% 9%;
+    --paper: #faf8f3;
+    --paper-warm: #f3e9df;
+    --paper-warmer: #ecdfd0;
+    --ink: #1a1714;
+    --ink-soft: #2a2520;
+    --ink-softer: #3a342e;
+    --line: #c9c4ba;
+    --line-soft: #e0dbd0;
+    --label: #8a847b;
+    --accent: #c75d2e;
+    --accent-soft: #e89373;
+    --accent-deep: #a14a23;
+    --green: #4a6b3a;
 
-    --card: 50 33% 97%;
-    --card-foreground: 60 12% 26%;
+    --background: 40 33% 97%;
+    --foreground: 24 10% 9%;
 
-    --popover: 50 33% 97%;
-    --popover-foreground: 60 17% 9%;
+    --card: 40 40% 98%;
+    --card-foreground: 24 10% 9%;
 
-    /* Primary = Forest */
-    --primary: 60 17% 9%;
-    --primary-foreground: 50 33% 95%;
+    --popover: 40 40% 98%;
+    --popover-foreground: 24 10% 9%;
 
-    /* Secondary = light cream tint */
-    --secondary: 50 16% 89%;
-    --secondary-foreground: 60 17% 9%;
+    --primary: 24 10% 9%;
+    --primary-foreground: 40 33% 97%;
 
-    /* Muted */
-    --muted: 50 16% 89%;
-    --muted-foreground: 60 11% 49%;
+    --secondary: 36 20% 91%;
+    --secondary-foreground: 24 10% 9%;
 
-    /* Accent = Amber */
-    --accent: 24 72% 41%;
-    --accent-foreground: 50 33% 95%;
+    --muted: 36 20% 91%;
+    --muted-foreground: 37 5% 51%;
+
+    --accent-hsl: 17 63% 48%;
+    --accent-foreground-hsl: 40 33% 97%;
 
     --destructive: 0 50% 36%;
-    --destructive-foreground: 50 33% 95%;
+    --destructive-foreground: 40 33% 97%;
 
-    --success: 79 39% 30%;
-    --success-foreground: 50 33% 95%;
+    --success: 100 30% 32%;
+    --success-foreground: 40 33% 97%;
 
-    --warning: 24 72% 41%;
-    --warning-foreground: 50 33% 95%;
+    --warning: 17 63% 48%;
+    --warning-foreground: 40 33% 97%;
 
-    /* Border soft */
-    --border: 50 16% 81%;
-    --input: 50 16% 81%;
-    --ring: 24 72% 41%;
+    --border: 37 14% 78%;
+    --input: 37 14% 78%;
+    --ring: 17 63% 48%;
 
     --radius: 0.5rem;
-
-    /* Brand tokens */
-    --cream: #F5F4EE;
-    --forest: #1C1C14;
-    --amber: #B5621E;
-    --olive: #5C6B2E;
-    --body-gray: #4A4A3A;
-    --brand-muted: #8A8A72;
-    --border-soft: #D8D6C8;
   }
 
   .dark {
-    --background: 60 17% 6%;
-    --foreground: 50 33% 95%;
+    --background: 24 10% 7%;
+    --foreground: 40 33% 97%;
 
-    --card: 60 14% 10%;
-    --card-foreground: 50 33% 95%;
+    --card: 24 10% 10%;
+    --card-foreground: 40 33% 97%;
 
-    --popover: 60 14% 10%;
-    --popover-foreground: 50 33% 95%;
+    --popover: 24 10% 10%;
+    --popover-foreground: 40 33% 97%;
 
-    --primary: 24 72% 41%;
-    --primary-foreground: 60 17% 9%;
+    --primary: 17 63% 48%;
+    --primary-foreground: 24 10% 9%;
 
-    --secondary: 60 14% 15%;
-    --secondary-foreground: 50 33% 95%;
+    --secondary: 24 10% 15%;
+    --secondary-foreground: 40 33% 97%;
 
-    --muted: 60 14% 15%;
-    --muted-foreground: 60 11% 55%;
+    --muted: 24 10% 15%;
+    --muted-foreground: 37 5% 55%;
 
-    --accent: 24 72% 41%;
-    --accent-foreground: 50 33% 95%;
+    --accent-hsl: 17 63% 48%;
+    --accent-foreground-hsl: 40 33% 97%;
 
     --destructive: 0 50% 40%;
-    --destructive-foreground: 50 33% 95%;
+    --destructive-foreground: 40 33% 97%;
 
-    --success: 79 39% 35%;
-    --success-foreground: 50 33% 95%;
+    --success: 100 30% 35%;
+    --success-foreground: 40 33% 97%;
 
-    --warning: 24 72% 50%;
-    --warning-foreground: 60 17% 9%;
+    --warning: 17 63% 55%;
+    --warning-foreground: 24 10% 9%;
 
-    --border: 60 14% 18%;
-    --input: 60 14% 18%;
-    --ring: 24 72% 41%;
+    --border: 24 10% 18%;
+    --input: 24 10% 18%;
+    --ring: 17 63% 48%;
   }
 }
 
@@ -98,7 +99,28 @@
     border-color: hsl(var(--border));
   }
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'ss01';
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: 'Fraunces', Georgia, serif;
+  }
+  .font-mono {
+    font-family: 'Geist Mono', 'SF Mono', Menlo, monospace;
+  }
+  .mono-label {
+    font-family: 'Geist Mono', 'SF Mono', Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--label);
+    font-weight: 500;
   }
 }

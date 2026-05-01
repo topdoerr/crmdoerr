@@ -46,13 +46,14 @@ export default function LoginPage() {
   }
 
   return (
-    <Card>
+    <Card className="border-line bg-paper">
       <CardHeader className="text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-amber text-white text-xl font-bold">
-          T
+        <div className="mx-auto mb-6">
+          <span className="font-serif text-3xl tracking-tight text-ink">TopDoerr</span>
+          <span className="text-accent text-3xl">.</span>
         </div>
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Sign in to your TopDoerr account</CardDescription>
+        <CardTitle className="font-serif text-2xl font-normal text-ink">Welcome back</CardTitle>
+        <CardDescription className="font-mono text-[10px] uppercase tracking-[0.18em] text-label">Sign in to continue</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">

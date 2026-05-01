@@ -22,24 +22,24 @@ export function Header() {
     : "";
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-card px-6">
+    <header className="flex h-16 items-center justify-between border-b border-line bg-paper px-6">
       <div className="flex items-center gap-4 flex-1">
         <div className="relative w-full max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search..." className="pl-9" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-label" />
+          <Input placeholder="Search..." className="pl-9 border-line bg-paper font-mono text-sm" />
         </div>
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="relative rounded-md p-2 hover:bg-accent">
-          <Bell className="h-5 w-5 text-muted-foreground" />
+        <button className="relative rounded-md p-2 hover:bg-paper-warm">
+          <Bell className="h-5 w-5 text-label" />
         </button>
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent">
+          <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-paper-warm">
             <Avatar className="h-8 w-8">
               <AvatarImage src={undefined} />
-              <AvatarFallback className="bg-amber text-white text-xs">
+              <AvatarFallback className="bg-accent text-paper text-xs font-serif italic">
                 {fullName ? getInitials(fullName) : "?"}
               </AvatarFallback>
             </Avatar>

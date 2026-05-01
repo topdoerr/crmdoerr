@@ -69,7 +69,7 @@ export function AiEmailWriter({ context, defaultTo }: AiEmailWriterProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="inline-flex items-center gap-2 rounded-md bg-amber px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-600">
+        <button className="inline-flex items-center gap-2 rounded-md bg-accent px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-600">
           <Mail className="h-4 w-4" />
           AI Email Writer
         </button>
@@ -125,7 +125,7 @@ export function AiEmailWriter({ context, defaultTo }: AiEmailWriterProps) {
           <button
             onClick={handleGenerate}
             disabled={loading || !to.trim() || !purpose.trim()}
-            className="inline-flex items-center gap-2 rounded-md bg-amber px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-600 disabled:opacity-50"
           >
             {loading ? (
               <>
