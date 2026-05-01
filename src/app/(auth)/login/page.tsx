@@ -39,11 +39,11 @@ export default function LoginPage() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-forest-600 text-white text-xl font-bold">
-          C
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-amber text-white text-xl font-bold">
+          T
         </div>
         <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Sign in to your CRM account</CardDescription>
+        <CardDescription>Sign in to your TopDoerr account</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">

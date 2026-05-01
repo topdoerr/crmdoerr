@@ -42,8 +42,8 @@ export default function RegisterPage() {
   return (
     <Card>
       <CardHeader className="text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-forest-600 text-white text-xl font-bold">
-          C
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-amber text-white text-xl font-bold">
+          T
         </div>
         <CardTitle className="text-2xl">Create an account</CardTitle>
         <CardDescription>Get started with CRM Doerr</CardDescription>

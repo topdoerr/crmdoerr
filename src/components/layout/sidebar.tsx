@@ -97,22 +97,22 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "flex flex-col border-r bg-card transition-all duration-300",
+        "flex flex-col border-r border-border-soft bg-forest-600 text-cream transition-all duration-300",
         collapsed ? "w-16" : "w-64"
       )}
     >
-      <div className="flex h-16 items-center justify-between border-b px-4">
+      <div className="flex h-16 items-center justify-between border-b border-forest-500 px-4">
         {!collapsed && (
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-forest-600 text-white text-sm font-bold">
-              C
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber text-white text-sm font-bold">
+              T
             </div>
-            <span className="text-lg font-semibold">TopDoerr</span>
+            <span className="text-lg font-semibold text-cream">TopDoerr</span>
           </Link>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="rounded-md p-1.5 hover:bg-accent"
+          className="rounded-md p-1.5 hover:bg-forest-500 text-cream"
         >
           {collapsed ? (
             <ChevronRight className="h-4 w-4" />
@@ -126,7 +126,7 @@ export function Sidebar() {
         {sections.map((section) => (
           <div key={section.label} className="mb-3">
             {!collapsed && (
-              <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground/60">
+              <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-muted">
                 {section.label}
               </div>
             )}
@@ -141,8 +141,8 @@ export function Sidebar() {
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
                       isActive
-                        ? "bg-forest-600 text-white"
-                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                        ? "bg-amber text-white"
+                        : "text-cream/70 hover:bg-forest-500 hover:text-cream"
                     )}
                   >
                     <item.icon className="h-4 w-4 shrink-0" />

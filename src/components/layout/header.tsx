@@ -39,7 +39,7 @@ export function Header() {
           <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-accent">
             <Avatar className="h-8 w-8">
               <AvatarImage src={undefined} />
-              <AvatarFallback className="bg-forest-600 text-white text-xs">
+              <AvatarFallback className="bg-amber text-white text-xs">
                 {fullName ? getInitials(fullName) : "?"}
               </AvatarFallback>
             </Avatar>

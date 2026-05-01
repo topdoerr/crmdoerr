@@ -89,7 +89,7 @@ export function AiChat() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-forest-600 text-white shadow-lg transition-transform hover:scale-105 hover:bg-forest-700"
+          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-amber text-white shadow-lg transition-transform hover:scale-105 hover:bg-amber-600"
           aria-label="Open AI Assistant"
         >
           <Sparkles className="h-6 w-6" />
@@ -100,7 +100,7 @@ export function AiChat() {
       {open && (
         <div className="fixed right-0 top-16 z-50 flex h-[calc(100vh-4rem)] w-[400px] flex-col border-l bg-white shadow-xl">
           {/* Header */}
-          <div className="flex items-center justify-between border-b bg-forest-600 px-4 py-3">
+          <div className="flex items-center justify-between border-b bg-amber px-4 py-3">
             <div className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-white" />
               <h2 className="font-semibold text-white">AI Assistant</h2>
@@ -134,7 +134,7 @@ export function AiChat() {
                 <div
                   className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
                     msg.role === "user"
-                      ? "bg-forest-600 text-white"
+                      ? "bg-amber text-white"
                       : "bg-muted text-foreground"
                   }`}
                 >
@@ -184,7 +184,7 @@ export function AiChat() {
               <button
                 onClick={handleSubmit}
                 disabled={loading || !input.trim()}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-forest-600 text-white transition-colors hover:bg-forest-700 disabled:opacity-50"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-amber text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4" />
