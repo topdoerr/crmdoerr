@@ -957,3 +957,17 @@ model StaffProfile {
   @@map("tblstaff_profiles")
 }
 
+model GoogleCalendarToken {
+  id           Int      @id @default(autoincrement())
+  staffId      Int      @unique @map("staff_id")
+  accessToken  String   @map("access_token")
+  refreshToken String   @map("refresh_token")
+  expiresAt    DateTime? @map("expires_at")
+  calendarId   String   @default("primary") @map("calendar_id")
+  syncEnabled  Int      @default(1) @map("sync_enabled")
+  lastSynced   DateTime? @map("last_synced")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("tblgoogle_calendar_tokens")
+}
+

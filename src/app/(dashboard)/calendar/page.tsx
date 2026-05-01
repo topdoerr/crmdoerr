@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import CalendarView from "./calendar-view";
 import EventForm from "./event-form";
+import { GoogleCalendarConnect } from "@/components/calendar/google-calendar-connect";
 
 export default async function CalendarPage({
   searchParams,
@@ -36,6 +37,11 @@ export default async function CalendarPage({
     orderBy: { startDate: "asc" },
   });
 
+  const googleToken = await prisma.googleCalendarToken.findUnique({
+    where: { staffId: 1 },
+    select: { lastSynced: true },
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -45,6 +51,11 @@ export default async function CalendarPage({
         </div>
         <EventForm />
       </div>
+
+      <GoogleCalendarConnect
+        connected={!!googleToken}
+        lastSynced={googleToken?.lastSynced?.toISOString() ?? null}
+      />
 
       <CalendarView
         year={year}
