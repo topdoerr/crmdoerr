@@ -21,6 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DeleteButton } from "@/components/ui/delete-button";
+import { deleteClient } from "../actions";
 
 const invoiceStatuses: Record<number, { label: string; variant: string }> = {
   1: { label: "Unpaid", variant: "warning" },
@@ -72,9 +74,16 @@ export default async function ClientDetailPage({
             {client.active === 1 ? "Active" : "Inactive"}
           </Badge>
         </div>
-        <Button asChild>
-          <Link href={`/clients/${client.id}?edit=true`}>Edit Client</Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button asChild>
+            <Link href={`/clients/${client.id}?edit=true`}>Edit Client</Link>
+          </Button>
+          <DeleteButton
+            onDelete={deleteClient.bind(null, client.id)}
+            entityName="Client"
+            redirectTo="/clients"
+          />
+        </div>
       </div>
 
       <Tabs defaultValue="overview">

@@ -45,7 +45,29 @@ export async function updateClient(id: number, formData: FormData) {
 }
 
 export async function deleteClient(id: number) {
-  await prisma.client.delete({ where: { id } });
+  await prisma.$transaction(async (tx) => {
+    await tx.lineItem.deleteMany({ where: { relId: id, relType: "invoice" } });
+    const invoices = await tx.invoice.findMany({ where: { clientId: id }, select: { id: true } });
+    const invoiceIds = invoices.map((i) => i.id);
+    if (invoiceIds.length > 0) {
+      await tx.payment.deleteMany({ where: { invoiceId: { in: invoiceIds } } });
+    }
+    await tx.invoice.deleteMany({ where: { clientId: id } });
+    await tx.contact.deleteMany({ where: { clientId: id } });
+    await tx.expense.deleteMany({ where: { clientId: id } });
+    await tx.estimate.deleteMany({ where: { clientId: id } });
+    await tx.contract.deleteMany({ where: { client: id } });
+    const projects = await tx.project.findMany({ where: { clientId: id }, select: { id: true } });
+    const projectIds = projects.map((p) => p.id);
+    if (projectIds.length > 0) {
+      await tx.projectMember.deleteMany({ where: { projectId: { in: projectIds } } });
+      await tx.note.deleteMany({ where: { relId: { in: projectIds }, relType: "project" } });
+      await tx.task.deleteMany({ where: { relId: { in: projectIds }, relType: "project" } });
+    }
+    await tx.project.deleteMany({ where: { clientId: id } });
+    await tx.lead.updateMany({ where: { clientId: id }, data: { clientId: null } });
+    await tx.client.delete({ where: { id } });
+  });
 
   revalidatePath("/clients");
 }

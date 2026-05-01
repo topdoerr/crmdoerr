@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, UserPlus, XCircle, Trash2 } from "lucide-react";
-import { convertLeadToClient, markLeadAsLost, markLeadAsJunk } from "../actions";
+import { DeleteButton } from "@/components/ui/delete-button";
+import { convertLeadToClient, markLeadAsLost, markLeadAsJunk, deleteLead } from "../actions";
 
 export default async function LeadDetailPage({
   params,
@@ -75,6 +76,11 @@ export default async function LeadDetailPage({
                   Mark as Junk
                 </Button>
               </form>
+              <DeleteButton
+                onDelete={deleteLead.bind(null, lead.id)}
+                entityName="Lead"
+                redirectTo="/leads"
+              />
             </>
           )}
           {lead.clientId && (

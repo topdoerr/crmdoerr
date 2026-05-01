@@ -83,6 +83,8 @@ export async function deleteTask(id: number) {
     select: { relType: true, relId: true },
   });
 
+  await prisma.taskAssigned.deleteMany({ where: { taskId: id } });
+  await prisma.taskTimer.deleteMany({ where: { taskId: id } });
   await prisma.task.delete({ where: { id } });
 
   revalidatePath("/tasks");

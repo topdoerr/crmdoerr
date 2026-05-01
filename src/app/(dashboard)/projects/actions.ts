@@ -74,7 +74,18 @@ export async function updateProject(id: number, formData: FormData) {
 }
 
 export async function deleteProject(id: number) {
-  await prisma.project.delete({ where: { id } });
+  await prisma.$transaction(async (tx) => {
+    await tx.projectMember.deleteMany({ where: { projectId: id } });
+    await tx.note.deleteMany({ where: { relId: id, relType: "project" } });
+    const tasks = await tx.task.findMany({ where: { relId: id, relType: "project" }, select: { id: true } });
+    const taskIds = tasks.map((t) => t.id);
+    if (taskIds.length > 0) {
+      await tx.taskAssigned.deleteMany({ where: { taskId: { in: taskIds } } });
+      await tx.taskTimer.deleteMany({ where: { taskId: { in: taskIds } } });
+    }
+    await tx.task.deleteMany({ where: { relId: id, relType: "project" } });
+    await tx.project.delete({ where: { id } });
+  });
 
   revalidatePath("/projects");
 }
