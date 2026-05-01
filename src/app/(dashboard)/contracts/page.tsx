@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -13,28 +11,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Check, X } from "lucide-react";
+import { ContractsHeader } from "./contracts-header";
 
 export default async function ContractsPage() {
-  const contracts = await prisma.contract.findMany({
-    where: { trash: { not: 1 } },
-    include: {
-      contractClient: true,
-      contractTypeRel: true,
-    },
-    orderBy: { datestart: "desc" },
-  });
+  const [contracts, clients, contractTypes] = await Promise.all([
+    prisma.contract.findMany({
+      where: { trash: { not: 1 } },
+      include: {
+        contractClient: true,
+        contractTypeRel: true,
+      },
+      orderBy: { datestart: "desc" },
+    }),
+    prisma.client.findMany({
+      select: { id: true, company: true },
+      orderBy: { company: "asc" },
+    }),
+    prisma.contractType.findMany({
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Contracts</h1>
-          <Badge variant="secondary">{contracts.length}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/contracts?modal=new">New Contract</Link>
-        </Button>
-      </div>
+      <ContractsHeader
+        count={contracts.length}
+        clients={clients}
+        contractTypes={contractTypes}
+      />
 
       <Card>
         <CardContent className="pt-6">

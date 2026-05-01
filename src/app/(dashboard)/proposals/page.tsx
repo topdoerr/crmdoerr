@@ -2,7 +2,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ProposalsHeader } from "./proposals-header";
 
 const PROPOSAL_STATUSES: Record<number, { label: string; variant: "default" | "secondary" | "destructive" | "success" | "warning" | "outline" }> = {
   1: { label: "Open", variant: "default" },
@@ -29,15 +29,7 @@ export default async function ProposalsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Proposals</h1>
-          <Badge variant="secondary">{proposals.length}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/proposals?modal=new">New Proposal</Link>
-        </Button>
-      </div>
+      <ProposalsHeader count={proposals.length} />
 
       <Card>
         <CardContent className="pt-6">

@@ -2,7 +2,6 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { formatDate, getInitials } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -14,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import TaskBoard from "./task-board";
+import { TasksHeader } from "./tasks-header";
 
 const TASK_STATUS: Record<
   number,
@@ -77,35 +77,7 @@ export default async function TasksPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Tasks</h1>
-          <Badge variant="secondary">{tasks.length}</Badge>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex rounded-md border">
-            <Button
-              variant={view === "list" ? "default" : "ghost"}
-              size="sm"
-              className="rounded-r-none"
-              asChild
-            >
-              <Link href="/tasks?view=list">List</Link>
-            </Button>
-            <Button
-              variant={view === "kanban" ? "default" : "ghost"}
-              size="sm"
-              className="rounded-l-none"
-              asChild
-            >
-              <Link href="/tasks?view=kanban">Kanban</Link>
-            </Button>
-          </div>
-          <Button asChild>
-            <Link href="/tasks?modal=new">Add Task</Link>
-          </Button>
-        </div>
-      </div>
+      <TasksHeader count={tasks.length} view={view} />
 
       {view === "kanban" ? (
         <TaskBoard

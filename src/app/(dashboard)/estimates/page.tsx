@@ -2,7 +2,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { EstimatesHeader } from "./estimates-header";
 
 const ESTIMATE_STATUSES: Record<number, { label: string; variant: "default" | "secondary" | "destructive" | "success" | "warning" | "outline" }> = {
   1: { label: "Draft", variant: "secondary" },
@@ -22,24 +22,22 @@ const ESTIMATE_STATUSES: Record<number, { label: string; variant: "default" | "s
 };
 
 export default async function EstimatesPage() {
-  const estimates = await prisma.estimate.findMany({
-    include: {
-      client: true,
-    },
-    orderBy: { date: "desc" },
-  });
+  const [estimates, clients] = await Promise.all([
+    prisma.estimate.findMany({
+      include: {
+        client: true,
+      },
+      orderBy: { date: "desc" },
+    }),
+    prisma.client.findMany({
+      select: { id: true, company: true },
+      orderBy: { company: "asc" },
+    }),
+  ]);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Estimates</h1>
-          <Badge variant="secondary">{estimates.length}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/estimates?modal=new">New Estimate</Link>
-        </Button>
-      </div>
+      <EstimatesHeader count={estimates.length} clients={clients} />
 
       <Card>
         <CardContent className="pt-6">

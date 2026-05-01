@@ -2,7 +2,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -13,15 +12,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DollarSign, Receipt, CreditCard } from "lucide-react";
+import { ExpensesHeader } from "./expenses-header";
 
 export default async function ExpensesPage() {
-  const expenses = await prisma.expense.findMany({
-    include: {
-      expenseCategoryRel: true,
-      expenseClient: true,
-    },
-    orderBy: { date: "desc" },
-  });
+  const [expenses, clients, expenseCategories] = await Promise.all([
+    prisma.expense.findMany({
+      include: {
+        expenseCategoryRel: true,
+        expenseClient: true,
+      },
+      orderBy: { date: "desc" },
+    }),
+    prisma.client.findMany({
+      select: { id: true, company: true },
+      orderBy: { company: "asc" },
+    }),
+    prisma.expenseCategory.findMany({
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   const totalExpenses = expenses.reduce(
     (sum, e) => sum + Number(e.amount ?? 0),
@@ -34,15 +44,11 @@ export default async function ExpensesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Expenses</h1>
-          <Badge variant="secondary">{expenses.length}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/expenses?modal=new">New Expense</Link>
-        </Button>
-      </div>
+      <ExpensesHeader
+        count={expenses.length}
+        clients={clients}
+        expenseCategories={expenseCategories}
+      />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>

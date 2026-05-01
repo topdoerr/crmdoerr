@@ -2,7 +2,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -13,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TicketsHeader } from "./tickets-header";
 
 export default async function TicketsPage({
   searchParams,
@@ -40,17 +40,7 @@ export default async function TicketsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">
-            Support Tickets
-          </h1>
-          <Badge variant="secondary">{tickets.length}</Badge>
-        </div>
-        <Button asChild>
-          <Link href="/tickets?modal=new">New Ticket</Link>
-        </Button>
-      </div>
+      <TicketsHeader count={tickets.length} />
 
       <Tabs defaultValue={statusFilter?.toString() || "all"}>
         <TabsList>

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -12,8 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Target, LayoutList, Columns3 } from "lucide-react";
 import { LeadBoard } from "./lead-board";
+import { LeadsHeader } from "./leads-header";
 
 export default async function LeadsPage({
   searchParams,
@@ -22,7 +21,7 @@ export default async function LeadsPage({
 }) {
   const view = searchParams?.view || "list";
 
-  const [leads, statuses] = await Promise.all([
+  const [leads, statuses, leadSources] = await Promise.all([
     prisma.lead.findMany({
       include: {
         leadStatus: true,
@@ -33,45 +32,19 @@ export default async function LeadsPage({
     prisma.leadStatus.findMany({
       orderBy: { statusorder: "asc" },
     }),
+    prisma.leadSource.findMany({
+      orderBy: { name: "asc" },
+    }),
   ]);
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">Leads</h1>
-          <Badge variant="secondary">{leads.length}</Badge>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-md border">
-            <Link
-              href="/leads?view=list"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium transition-colors ${
-                view === "list"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted"
-              } rounded-l-md`}
-            >
-              <LayoutList className="h-4 w-4" />
-              List
-            </Link>
-            <Link
-              href="/leads?view=kanban"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium transition-colors ${
-                view === "kanban"
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted"
-              } rounded-r-md`}
-            >
-              <Columns3 className="h-4 w-4" />
-              Kanban
-            </Link>
-          </div>
-          <Button asChild>
-            <Link href="/leads?modal=new">Add Lead</Link>
-          </Button>
-        </div>
-      </div>
+      <LeadsHeader
+        count={leads.length}
+        view={view}
+        leadStatuses={statuses.map((s) => ({ id: s.id, name: s.name }))}
+        leadSources={leadSources.map((s) => ({ id: s.id, name: s.name }))}
+      />
 
       {view === "kanban" ? (
         <LeadBoard
