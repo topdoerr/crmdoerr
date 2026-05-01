@@ -1,5 +1,4 @@
-import { Sidebar } from "@/components/layout/sidebar";
-import { Header } from "@/components/layout/header";
+import { TopNav } from "@/components/layout/top-nav";
 import { Providers } from "@/components/layout/providers";
 import { AiChat } from "@/components/ai/ai-chat";
 
@@ -12,14 +11,11 @@ export default function DashboardLayout({
 }) {
   return (
     <Providers>
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar />
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <Header />
-          <main className="flex-1 overflow-y-auto bg-paper p-6">
-            {children}
-          </main>
-        </div>
+      <div className="flex h-screen flex-col overflow-hidden">
+        <TopNav />
+        <main className="flex-1 overflow-y-auto bg-paper p-6">
+          {children}
+        </main>
         <AiChat />
       </div>
     </Providers>
