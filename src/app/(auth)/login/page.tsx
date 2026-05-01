@@ -22,17 +22,26 @@ export default function LoginPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    const result = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email: formData.get("email"),
+        password: formData.get("password"),
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError("Invalid email or password");
+      if (result?.error) {
+        setError(result.error === "CredentialsSignin" ? "Invalid email or password" : result.error);
+        setLoading(false);
+      } else if (result?.ok) {
+        router.push(callbackUrl);
+        router.refresh();
+      } else {
+        setError("Sign in failed. Please try again.");
+        setLoading(false);
+      }
+    } catch (err) {
+      setError("Connection error. Please try again.");
       setLoading(false);
-    } else {
-      router.push(callbackUrl);
     }
   }
 
