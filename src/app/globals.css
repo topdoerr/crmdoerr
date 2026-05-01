@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Geist+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Geist+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,52 +6,52 @@
 
 @layer base {
   :root {
-    --paper: #faf8f3;
-    --paper-warm: #f3e9df;
-    --paper-warmer: #ecdfd0;
+    --paper: #ffffff;
+    --paper-warm: #f9f9f7;
+    --paper-warmer: #f3f3f0;
     --ink: #1a1714;
     --ink-soft: #2a2520;
     --ink-softer: #3a342e;
-    --line: #c9c4ba;
-    --line-soft: #e0dbd0;
+    --line: #e5e5e0;
+    --line-soft: #efefeb;
     --label: #8a847b;
     --accent: #c75d2e;
     --accent-soft: #e89373;
     --accent-deep: #a14a23;
     --green: #4a6b3a;
 
-    --background: 40 33% 97%;
+    --background: 0 0% 100%;
     --foreground: 24 10% 9%;
 
-    --card: 40 40% 98%;
+    --card: 0 0% 100%;
     --card-foreground: 24 10% 9%;
 
-    --popover: 40 40% 98%;
+    --popover: 0 0% 100%;
     --popover-foreground: 24 10% 9%;
 
     --primary: 24 10% 9%;
-    --primary-foreground: 40 33% 97%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 36 20% 91%;
+    --secondary: 40 10% 95%;
     --secondary-foreground: 24 10% 9%;
 
-    --muted: 36 20% 91%;
+    --muted: 40 10% 95%;
     --muted-foreground: 37 5% 51%;
 
     --accent-hsl: 17 63% 48%;
-    --accent-foreground-hsl: 40 33% 97%;
+    --accent-foreground-hsl: 0 0% 100%;
 
     --destructive: 0 50% 36%;
-    --destructive-foreground: 40 33% 97%;
+    --destructive-foreground: 0 0% 100%;
 
     --success: 100 30% 32%;
-    --success-foreground: 40 33% 97%;
+    --success-foreground: 0 0% 100%;
 
     --warning: 17 63% 48%;
-    --warning-foreground: 40 33% 97%;
+    --warning-foreground: 0 0% 100%;
 
-    --border: 37 14% 78%;
-    --input: 37 14% 78%;
+    --border: 40 10% 90%;
+    --input: 40 10% 90%;
     --ring: 17 63% 48%;
 
     --radius: 0.5rem;
@@ -59,31 +59,31 @@
 
   .dark {
     --background: 24 10% 7%;
-    --foreground: 40 33% 97%;
+    --foreground: 0 0% 98%;
 
     --card: 24 10% 10%;
-    --card-foreground: 40 33% 97%;
+    --card-foreground: 0 0% 98%;
 
     --popover: 24 10% 10%;
-    --popover-foreground: 40 33% 97%;
+    --popover-foreground: 0 0% 98%;
 
     --primary: 17 63% 48%;
     --primary-foreground: 24 10% 9%;
 
     --secondary: 24 10% 15%;
-    --secondary-foreground: 40 33% 97%;
+    --secondary-foreground: 0 0% 98%;
 
     --muted: 24 10% 15%;
     --muted-foreground: 37 5% 55%;
 
     --accent-hsl: 17 63% 48%;
-    --accent-foreground-hsl: 40 33% 97%;
+    --accent-foreground-hsl: 0 0% 98%;
 
     --destructive: 0 50% 40%;
-    --destructive-foreground: 40 33% 97%;
+    --destructive-foreground: 0 0% 98%;
 
     --success: 100 30% 35%;
-    --success-foreground: 40 33% 97%;
+    --success-foreground: 0 0% 98%;
 
     --warning: 17 63% 55%;
     --warning-foreground: 24 10% 9%;
@@ -101,16 +101,15 @@
   body {
     background-color: var(--paper);
     color: var(--ink);
-    font-family: 'Fraunces', Georgia, serif;
+    font-family: 'Figtree', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: 'ss01';
   }
 }
 
 @layer utilities {
   .font-serif {
-    font-family: 'Fraunces', Georgia, serif;
+    font-family: 'Figtree', system-ui, sans-serif;
   }
   .font-mono {
     font-family: 'Geist Mono', 'SF Mono', Menlo, monospace;

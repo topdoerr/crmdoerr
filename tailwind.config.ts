@@ -6,14 +6,15 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["Fraunces", "Georgia", "serif"],
+        sans: ["Figtree", "system-ui", "-apple-system", "sans-serif"],
+        serif: ["Figtree", "system-ui", "sans-serif"],
         mono: ["Geist Mono", "SF Mono", "Menlo", "monospace"],
       },
       colors: {
         paper: {
-          DEFAULT: "#faf8f3",
-          warm: "#f3e9df",
-          warmer: "#ecdfd0",
+          DEFAULT: "#ffffff",
+          warm: "#f9f9f7",
+          warmer: "#f3f3f0",
         },
         ink: {
           DEFAULT: "#1a1714",
@@ -21,8 +22,8 @@ const config: Config = {
           softer: "#3a342e",
         },
         line: {
-          DEFAULT: "#c9c4ba",
-          soft: "#e0dbd0",
+          DEFAULT: "#e5e5e0",
+          soft: "#efefeb",
         },
         label: "#8a847b",
         accent: {
