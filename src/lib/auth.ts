@@ -42,38 +42,47 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password are required");
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            console.error("[auth] missing email or password");
+            throw new Error("Email and password are required");
+          }
+
+          const staff = await prisma.staff.findFirst({
+            where: { email: credentials.email },
+          });
+
+          if (!staff) {
+            console.error("[auth] no staff found for email:", credentials.email);
+            throw new Error("No account found with this email");
+          }
+
+          if (staff.active !== 1) {
+            console.error("[auth] staff inactive:", credentials.email, "active=", staff.active);
+            throw new Error("This account has been deactivated");
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            staff.password
+          );
+
+          if (!isPasswordValid) {
+            console.error("[auth] invalid password for:", credentials.email);
+            throw new Error("Invalid password");
+          }
+
+          return {
+            id: String(staff.staffid),
+            email: staff.email,
+            firstName: staff.firstName,
+            lastName: staff.lastName,
+            admin: staff.admin === 1,
+          };
+        } catch (err) {
+          console.error("[auth] authorize() threw:", err);
+          throw err;
         }
-
-        const staff = await prisma.staff.findFirst({
-          where: { email: credentials.email },
-        });
-
-        if (!staff) {
-          throw new Error("No account found with this email");
-        }
-
-        if (staff.active !== 1) {
-          throw new Error("This account has been deactivated");
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          staff.password
-        );
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid password");
-        }
-
-        return {
-          id: String(staff.staffid),
-          email: staff.email,
-          firstName: staff.firstName,
-          lastName: staff.lastName,
-          admin: staff.admin === 1,
-        };
       },
     }),
   ],

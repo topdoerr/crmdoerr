@@ -35,6 +35,7 @@ export default function LoginPage() {
       } else if (result?.ok) {
         router.push(callbackUrl);
         router.refresh();
+        setLoading(false);
       } else {
         setError("Sign in failed. Please try again.");
         setLoading(false);
