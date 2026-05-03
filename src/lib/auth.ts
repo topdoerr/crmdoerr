@@ -3,6 +3,16 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
+const missingEnv = ["NEXTAUTH_SECRET", "NEXTAUTH_URL", "DATABASE_URL"].filter(
+  (k) => !process.env[k]
+);
+if (missingEnv.length > 0) {
+  throw new Error(
+    `[auth] missing required env vars: ${missingEnv.join(", ")}. ` +
+      `Add them to .env.local (see .env.example) and restart the dev server.`
+  );
+}
+
 declare module "next-auth" {
   interface Session {
     user: {
